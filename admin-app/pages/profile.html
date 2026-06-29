@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Profile - ShowPay</title>
+    <title>Profile - ShowPay Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../shared/css/base.css">
     <link rel="stylesheet" href="../../user-app/css/common.css">
@@ -18,27 +18,35 @@
             <div class="admin-nav-links">
                 <a href="dashboard.html" class="admin-nav-link">Dashboard</a>
                 <a href="users.html" class="admin-nav-link">Users</a>
-                <a href="slider.html" class="admin-nav-link">Sliders</a>
-                <a href="video-popup.html" class="admin-nav-link">Videos</a>
-                <a href="telegram-popup.html" class="admin-nav-link">Telegram</a>
+                <a href="user-details.html" class="admin-nav-link">User Details</a>
+                <a href="reports.html" class="admin-nav-link">Reports</a>
+                <a href="slider.html" class="admin-nav-link">Slider</a>
+                <a href="banner.html" class="admin-nav-link">Banner</a>
+                <a href="video-popup.html" class="admin-nav-link">Video Popup</a>
+                <a href="telegram-popup.html" class="admin-nav-link">Telegram Popup</a>
                 <a href="settings.html" class="admin-nav-link">Settings</a>
-                <a href="trash.html" class="admin-nav-link">Trash</a>
-                <a href="notifications.html" class="admin-nav-link">Notifications</a>
-                <a href="activity-logs.html" class="admin-nav-link">Logs</a>
                 <a href="profile.html" class="admin-nav-link active">Profile</a>
                 <button class="btn btn-danger btn-sm" id="admin-logout-btn">Logout</button>
             </div>
         </nav>
 
         <main class="admin-main">
-            <h2 style="margin-bottom: 24px;">Admin Profile</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h2>Admin Security Profile</h2>
+            </div>
 
-            <div class="table-container" style="padding: 32px; max-width: 600px;">
-                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">System Administrator</h3>
-                <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 24px;">Full read/write/broadcast privileges across the ShowPay 2.0 platform.</p>
-                <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
-                    <label style="color: var(--text-muted); font-size: 14px; font-weight: 600;">Email Address</label>
-                    <p style="font-size: 18px; font-weight: 700; margin-top: 4px;">admin@showpay.com</p>
+            <div class="table-container" style="padding: 32px; max-width: 600px; margin: 0 auto;">
+                <h3 style="margin-bottom: 24px;">Administrator Credentials</h3>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <label style="color: var(--text-muted); font-size: 14px; font-weight: 600;">Admin Email</label>
+                        <input type="email" class="search-input" style="width: 100%; margin-top: 8px;" value="admin@showpay.com" readonly>
+                    </div>
+                    <div>
+                        <label style="color: var(--text-muted); font-size: 14px; font-weight: 600;">Fixed Password</label>
+                        <input type="text" class="search-input" style="width: 100%; margin-top: 8px;" value="admin@0123" readonly>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 12px; margin-top: 8px;">* Admin credentials are secured by fixed login policy as per system requirement.</p>
                 </div>
             </div>
         </main>

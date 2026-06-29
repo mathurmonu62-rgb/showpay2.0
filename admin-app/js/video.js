@@ -51,21 +51,58 @@ async function loadVideos() {
     videos.forEach(v => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
+            <td><video src="${v.video_url}" style="height: 70px; width: 140px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color);" controls></video></td>
             <td><strong>${v.title}</strong></td>
-            <td><a href="${v.video_url}" target="_blank">Preview Video</a></td>
-            <td>${v.autoplay ? 'Yes' : 'No'}</td>
-            <td><span class="status-badge status-${v.is_enabled ? 'completed' : 'pending'}">${v.is_enabled ? 'Active' : 'Disabled'}</span></td>
-            <td><button class="btn btn-secondary btn-sm btn-toggle-video" data-id="${v.id}">${v.is_enabled ? 'Disable' : 'Enable'}</button></td>
+            <td><span class="status-badge status-${v.autoplay ? 'completed' : 'pending'}">${v.autoplay ? 'ON' : 'OFF'}</span></td>
+            <td><span class="status-badge status-${v.is_enabled ? 'completed' : 'pending'}">${v.is_enabled ? 'ENABLED' : 'DISABLED'}</span></td>
+            <td>
+                <div class="action-btns">
+                    <button class="btn btn-${v.is_enabled ? 'warning' : 'success'} btn-sm btn-toggle-video" data-id="${v.id}" data-state="${v.is_enabled}">${v.is_enabled ? '🚫 Disable' : '✅ Enable'}</button>
+                    <button class="btn btn-secondary btn-sm btn-autoplay-video" data-id="${v.id}" data-auto="${v.autoplay}">⏯️ Autoplay</button>
+                    <button class="btn btn-primary btn-sm btn-replace-video" data-id="${v.id}">🔄 Replace URL</button>
+                    <button class="btn btn-danger btn-sm btn-delete-video" data-id="${v.id}">🗑️ Delete</button>
+                </div>
+            </td>
         `;
         tbody.appendChild(tr);
     });
 
     document.querySelectorAll('.btn-toggle-video').forEach(btn => btn.addEventListener('click', async (e) => {
         const id = e.target.getAttribute('data-id');
-        const v = videos.find(x => x.id === id);
-        await dbApi.update('popup_video', { is_enabled: !v.is_enabled }, { id });
-        await dbApi.insert('activity_logs', { action_type: 'Video Update', description: `Toggled video popup`, performed_by: 'Admin' });
-        sharedUtils.showToast("Video popup status updated!", "success");
+        const currentState = e.target.getAttribute('data-state') === 'true';
+        await dbApi.update('popup_video', { is_enabled: !currentState }, { id });
+        await dbApi.insert('activity_logs', { action_type: 'Video Update', description: `Toggled video state`, performed_by: 'Admin' });
+        sharedUtils.showToast(`Video Popup ${!currentState ? 'Enabled' : 'Disabled'} live!`, "success");
         loadVideos();
+    }));
+
+    document.querySelectorAll('.btn-autoplay-video').forEach(btn => btn.addEventListener('click', async (e) => {
+        const id = e.target.getAttribute('data-id');
+        const currentAuto = e.target.getAttribute('data-auto') === 'true';
+        await dbApi.update('popup_video', { autoplay: !currentAuto }, { id });
+        await dbApi.insert('activity_logs', { action_type: 'Video Update', description: `Toggled autoplay state`, performed_by: 'Admin' });
+        sharedUtils.showToast(`Autoplay ${!currentAuto ? 'ON' : 'OFF'} live!`, "success");
+        loadVideos();
+    }));
+
+    document.querySelectorAll('.btn-replace-video').forEach(btn => btn.addEventListener('click', async (e) => {
+        const id = e.target.getAttribute('data-id');
+        const newUrl = prompt("Enter New Video URL:", "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4");
+        if (newUrl) {
+            await dbApi.update('popup_video', { video_url: newUrl }, { id });
+            await dbApi.insert('activity_logs', { action_type: 'Video Update', description: `Replaced video URL`, performed_by: 'Admin' });
+            sharedUtils.showToast("Video URL replaced live!", "success");
+            loadVideos();
+        }
+    }));
+
+    document.querySelectorAll('.btn-delete-video').forEach(btn => btn.addEventListener('click', async (e) => {
+        if (confirm("Delete this video?")) {
+            const id = e.target.getAttribute('data-id');
+            await dbApi.delete('popup_video', { id });
+            await dbApi.insert('activity_logs', { action_type: 'Video Update', description: `Deleted video`, performed_by: 'Admin' });
+            sharedUtils.showToast("Video deleted live!", "success");
+            loadVideos();
+        }
     }));
 }

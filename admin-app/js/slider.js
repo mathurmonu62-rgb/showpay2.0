@@ -42,23 +42,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadSliders() {
-    const sliders = await dbApi.select('slider_images', null, { column: 'display_order', ascending: true });
+    let sliders = await dbApi.select('slider_images');
+    sliders.sort((a, b) => a.display_order - b.display_order);
+
     const tbody = document.getElementById('sliders-table-body');
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    sliders.forEach(s => {
+    sliders.forEach((s, index) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><img src="${s.image_url}" style="height: 40px; width: 80px; object-fit: cover; border-radius: 6px;"></td>
+            <td><img src="${s.image_url}" alt="Preview" style="height: 60px; width: 140px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color);"></td>
             <td><strong>${s.title}</strong></td>
-            <td><a href="${s.link_url || '#'}" target="_blank">${s.link_url || 'N/A'}</a></td>
-            <td>${s.display_order}</td>
-            <td><span class="status-badge status-${s.is_enabled ? 'completed' : 'pending'}">${s.is_enabled ? 'Active' : 'Disabled'}</span></td>
+            <td><strong>${s.display_order}</strong></td>
+            <td><span class="status-badge status-${s.is_enabled ? 'completed' : 'pending'}">${s.is_enabled ? 'ENABLED' : 'DISABLED'}</span></td>
             <td>
                 <div class="action-btns">
-                    <button class="btn btn-secondary btn-sm btn-toggle-slider" data-id="${s.id}">${s.is_enabled ? 'Disable' : 'Enable'}</button>
-                    <button class="btn btn-danger btn-sm btn-del-slider" data-id="${s.id}">🗑️</button>
+                    <button class="btn btn-${s.is_enabled ? 'warning' : 'success'} btn-sm btn-toggle-slider" data-id="${s.id}" data-state="${s.is_enabled}">${s.is_enabled ? '🚫 Disable' : '✅ Enable'}</button>
+                    <button class="btn btn-secondary btn-sm btn-reorder-slider" data-id="${s.id}" data-order="${s.display_order}">↕️ Reorder</button>
+                    <button class="btn btn-danger btn-sm btn-delete-slider" data-id="${s.id}">🗑️ Delete</button>
                 </div>
             </td>
         `;
@@ -67,17 +69,32 @@ async function loadSliders() {
 
     document.querySelectorAll('.btn-toggle-slider').forEach(btn => btn.addEventListener('click', async (e) => {
         const id = e.target.getAttribute('data-id');
-        const s = sliders.find(x => x.id === id);
-        await dbApi.update('slider_images', { is_enabled: !s.is_enabled }, { id });
-        await dbApi.insert('activity_logs', { action_type: 'Slider Update', description: `Toggled slider ${s.title}`, performed_by: 'Admin' });
-        sharedUtils.showToast("Slider status updated!", "success");
+        const currentState = e.target.getAttribute('data-state') === 'true';
+        await dbApi.update('slider_images', { is_enabled: !currentState }, { id });
+        await dbApi.insert('activity_logs', { action_type: 'Slider Update', description: `Toggled slider state`, performed_by: 'Admin' });
+        sharedUtils.showToast(`Slider ${!currentState ? 'Enabled' : 'Disabled'} live!`, "success");
         loadSliders();
     }));
 
-    document.querySelectorAll('.btn-del-slider').forEach(btn => btn.addEventListener('click', async (e) => {
+    document.querySelectorAll('.btn-reorder-slider').forEach(btn => btn.addEventListener('click', async (e) => {
         const id = e.target.getAttribute('data-id');
-        await dbApi.delete('slider_images', { id });
-        sharedUtils.showToast("Slider deleted!", "success");
-        loadSliders();
+        const currentOrder = e.target.getAttribute('data-order');
+        const newOrder = prompt("Enter New Display Order (Number):", currentOrder);
+        if (newOrder && !isNaN(newOrder)) {
+            await dbApi.update('slider_images', { display_order: parseInt(newOrder) }, { id });
+            await dbApi.insert('activity_logs', { action_type: 'Slider Update', description: `Reordered slider`, performed_by: 'Admin' });
+            sharedUtils.showToast("Slider reordered live!", "success");
+            loadSliders();
+        }
+    }));
+
+    document.querySelectorAll('.btn-delete-slider').forEach(btn => btn.addEventListener('click', async (e) => {
+        if (confirm("Delete this slider?")) {
+            const id = e.target.getAttribute('data-id');
+            await dbApi.delete('slider_images', { id });
+            await dbApi.insert('activity_logs', { action_type: 'Slider Update', description: `Deleted slider`, performed_by: 'Admin' });
+            sharedUtils.showToast("Slider deleted live!", "success");
+            loadSliders();
+        }
     }));
 }

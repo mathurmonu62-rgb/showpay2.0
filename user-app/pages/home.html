@@ -3,49 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShowPay - Home</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Home - ShowPay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../shared/css/base.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/home.css">
-    <link rel="stylesheet" href="../css/slider.css">
     <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../css/slider.css">
     <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
-    <div class="user-layout">
-        <div class="header-title">SHOWPAY</div>
+    <div class="app-container">
+        <!-- Top Header -->
+        <header class="home-header">
+            <div class="logo-title">ShowPay</div>
+            <div class="header-icon" id="btn-info-header">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0084ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </div>
+        </header>
 
-        <!-- Live Slider Component Container -->
-        <div id="slider-container" class="slider-container">
-            <!-- Populated dynamically via slider.js -->
+        <!-- Main Content Scroll Area -->
+        <main class="home-main">
+            <!-- Promo Slider Banner -->
+            <div class="slider-wrapper" id="home-slider-container">
+                <div class="promo-banner">
+                    <div class="promo-content">
+                        <h2>A must read <span class="text-highlight">for</span><br><span class="text-green">newbies</span></h2>
+                        <p>How to make more profits</p>
+                        <button class="btn-read-promo" id="btn-promo-read">Click to read</button>
+                    </div>
+                    <div class="promo-illustration">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop" id="promo-img" alt="Illustration">
+                    </div>
+                    <div class="slider-dots" id="slider-dots-container">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USDT Ratio & INR Bonus Ratio Card -->
+            <div class="ratio-card-container">
+                <div class="ratio-left">
+                    <div class="ratio-label">USDT Ratio</div>
+                    <div class="ratio-value" id="usdt-ratio-text">1 USDT ≈ 107.61 INR</div>
+                    <div class="ratio-sub">Bonus ratio: 2%</div>
+                </div>
+                <div class="ratio-divider"></div>
+                <div class="ratio-right">
+                    <div class="ratio-label">INR Bonus Ratio</div>
+                    <div class="ratio-value-large" id="bonus-ratio-text">4%</div>
+                </div>
+            </div>
+
+            <!-- Top Up Button with Ribbon -->
+            <div class="topup-button-container">
+                <button class="btn-topup" id="btn-topup-action">Top up</button>
+                <div class="topup-ribbon">
+                    <span class="ribbon-coin">🪙</span> First
+                </div>
+            </div>
+
+            <!-- 4 Grid Stats -->
+            <div class="stats-grid">
+                <div class="stat-item" id="nav-balance">
+                    <div class="stat-label">Balance <span class="arrow-icon">›</span></div>
+                    <div class="stat-val">0.00</div>
+                </div>
+                <div class="stat-item" id="nav-received">
+                    <div class="stat-label">Today Received <span class="arrow-icon">›</span></div>
+                    <div class="stat-val">0.00</div>
+                </div>
+                <div class="stat-item" id="nav-topup-bonus">
+                    <div class="stat-label">Top up Bonus <span class="arrow-icon">›</span></div>
+                    <div class="stat-val">0.00</div>
+                </div>
+                <div class="stat-item" id="nav-team-comm">
+                    <div class="stat-label">Team Commission <span class="arrow-icon">›</span></div>
+                    <div class="stat-val">0.00</div>
+                </div>
+            </div>
+
+            <!-- Tutorial Section -->
+            <div class="tutorial-section">
+                <h3 class="tutorial-title">Tutorial</h3>
+                <div class="tutorial-card" id="nav-tutorial-site">
+                    <div class="tutorial-text">ShowPay Official Website</div>
+                    <div class="tutorial-preview">
+                        <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=200&auto=format&fit=crop" alt="Website Preview">
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Chat Action Button -->
+        <div class="floating-chat-btn" id="btn-floating-chat">
+            <div class="chat-bubble-icon"></div>
         </div>
 
-        <!-- Static Promotion / USDT Ratio Card -->
-        <div class="usdt-card">
-            <div class="usdt-label">USDT/INR Exchange Rate</div>
-            <div class="usdt-rate" id="display-usdt-rate">1 USDT = 107.61 INR</div>
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-navbar">
+            <a href="home.html" class="nav-item active">
+                <div class="nav-icon nav-icon-home"></div>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-tab-deposit">
+                <div class="nav-icon nav-icon-deposit"></div>
+                <span>Deposit</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-tab-upi">
+                <div class="nav-icon nav-icon-upi"></div>
+                <span>UPI</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-tab-team">
+                <div class="nav-icon nav-icon-team"></div>
+                <span>Team</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-tab-me">
+                <div class="nav-icon nav-icon-me"></div>
+                <span>Me</span>
+            </a>
+        </nav>
+
+        <!-- ========================================== -->
+        <!-- SEQUENTIAL POPUP MODALS -->
+        <!-- ========================================== -->
+
+        <!-- 1. MPIN Setup Popup Modal -->
+        <div class="modal-backdrop" id="mpin-modal">
+            <div class="modal-card mpin-card">
+                <div class="modal-header-custom">
+                    <h3>Set Security MPIN</h3>
+                </div>
+                <div class="modal-body-custom">
+                    <p class="modal-desc">Please set a 4-digit security MPIN to secure your ShowPay wallet transactions.</p>
+                    <form id="mpin-form" class="modal-form">
+                        <input type="password" id="mpin-input" maxlength="4" placeholder="••••" required autocomplete="off" class="mpin-box">
+                        <button type="submit" class="btn-modal-submit">Confirm MPIN</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
-        <div class="welcome-card">
-            <h3>Welcome to ShowPay 2.0</h3>
-            <p>Your ultimate real-time high-profit platform.</p>
-            <button class="btn btn-primary" id="btn-retrigger-video">📹 Replay Video Guide</button>
-            <button class="btn btn-secondary" id="btn-retrigger-telegram" style="margin-top: 12px;">📢 Open Telegram Invite</button>
+        <!-- 2. Success Popup Modal -->
+        <div class="modal-backdrop" id="success-modal">
+            <div class="modal-card success-card">
+                <div class="modal-icon-success">✓</div>
+                <h3>Verification Successful</h3>
+                <p>Your security MPIN has been saved successfully. Welcome to ShowPay 2.0!</p>
+                <button class="btn-modal-submit" id="btn-success-continue">Continue</button>
+            </div>
         </div>
 
-        <div class="welcome-card" style="margin-top: 16px;">
-            <h3>User Security</h3>
-            <p>MPIN Status: <span id="display-mpin-status" style="font-weight: 600;">Checking...</span></p>
-            <button class="btn btn-danger" id="btn-logout" style="margin-top: 16px;">Logout</button>
+        <!-- 3. Video Popup Modal -->
+        <div class="modal-backdrop" id="video-modal">
+            <div class="modal-card video-card">
+                <button class="btn-modal-close" id="btn-close-video">✕</button>
+                <h3 id="video-modal-title">How to use ShowPay Fast</h3>
+                <div class="video-container-popup">
+                    <video id="popup-video-player" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" controls playsinline></video>
+                </div>
+                <button class="btn-modal-submit" id="btn-video-continue">Done</button>
+            </div>
         </div>
+
+        <!-- 4. Telegram Promo Popup Modal -->
+        <div class="modal-backdrop" id="telegram-modal">
+            <div class="modal-card telegram-card">
+                <button class="btn-modal-close" id="btn-close-telegram">✕</button>
+                <div class="telegram-icon-container">
+                    <img id="telegram-popup-img" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+                </div>
+                <h3 id="telegram-modal-title">Join Official Telegram Channel</h3>
+                <p id="telegram-modal-desc">Stay updated with daily high profit tips and instant rewards!</p>
+                <a href="https://t.me/showpay_official" target="_blank" class="btn-modal-submit telegram-btn" id="telegram-modal-link">Join Telegram</a>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Modal placeholders (rendered dynamically by components) -->
-    <div id="modal-root"></div>
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
 
-    <!-- Modular JS entrypoint for home -->
     <script type="module" src="../js/home.js"></script>
 </body>
 </html>

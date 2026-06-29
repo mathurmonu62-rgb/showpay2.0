@@ -9,7 +9,10 @@
     <link rel="stylesheet" href="../../user-app/css/common.css">
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/users.css">
     <link rel="stylesheet" href="../css/responsive.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="admin-container">
@@ -18,38 +21,86 @@
             <div class="admin-nav-links">
                 <a href="dashboard.html" class="admin-nav-link active">Dashboard</a>
                 <a href="users.html" class="admin-nav-link">Users</a>
-                <a href="slider.html" class="admin-nav-link">Sliders</a>
-                <a href="video-popup.html" class="admin-nav-link">Videos</a>
-                <a href="telegram-popup.html" class="admin-nav-link">Telegram</a>
+                <a href="user-details.html" class="admin-nav-link">User Details</a>
+                <a href="reports.html" class="admin-nav-link">Reports</a>
+                <a href="slider.html" class="admin-nav-link">Slider</a>
+                <a href="banner.html" class="admin-nav-link">Banner</a>
+                <a href="video-popup.html" class="admin-nav-link">Video Popup</a>
+                <a href="telegram-popup.html" class="admin-nav-link">Telegram Popup</a>
                 <a href="settings.html" class="admin-nav-link">Settings</a>
-                <a href="trash.html" class="admin-nav-link">Trash</a>
-                <a href="notifications.html" class="admin-nav-link">Notifications</a>
-                <a href="activity-logs.html" class="admin-nav-link">Logs</a>
                 <a href="profile.html" class="admin-nav-link">Profile</a>
                 <button class="btn btn-danger btn-sm" id="admin-logout-btn">Logout</button>
             </div>
         </nav>
 
         <main class="admin-main">
-            <h2 style="margin-bottom: 28px;">System Overview</h2>
+            <h2 style="margin-bottom: 28px;">System Overview Dashboard</h2>
 
+            <!-- Dashboard Cards -->
             <div class="dashboard-grid">
                 <div class="stat-card">
-                    <div class="stat-title">Total Registered Users</div>
+                    <div class="stat-title">👤 Total Users</div>
                     <div class="stat-value" id="stat-total-users">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Pending Verifications</div>
+                    <div class="stat-title">🟡 Pending Users</div>
                     <div class="stat-value" id="stat-pending-users">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Active Live Sliders</div>
+                    <div class="stat-title">🟢 Completed Users</div>
+                    <div class="stat-value" id="stat-completed-users">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">📅 Today’s Login</div>
+                    <div class="stat-value" id="stat-today-login">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">🕒 Latest Login</div>
+                    <div class="stat-value" id="stat-latest-login" style="font-size: 20px;">---</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">🖼 Total Slider Images</div>
                     <div class="stat-value" id="stat-slider-count">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Popup Videos</div>
+                    <div class="stat-title">🎥 Total Popup Videos</div>
                     <div class="stat-value" id="stat-video-count">0</div>
                 </div>
+            </div>
+
+            <!-- Dashboard Charts Section -->
+            <h3 style="margin: 40px 0 24px 0; font-size: 22px;">Dashboard Analytics Charts</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 32px; margin-bottom: 48px;">
+                <div class="table-container" style="padding: 24px;">
+                    <h4 style="margin-bottom: 16px; color: var(--text-muted); text-transform: uppercase;">Daily Login Graph</h4>
+                    <div style="height: 300px;"><canvas id="chart-daily-login"></canvas></div>
+                </div>
+                <div class="table-container" style="padding: 24px;">
+                    <h4 style="margin-bottom: 16px; color: var(--text-muted); text-transform: uppercase;">Pending vs Completed</h4>
+                    <div style="height: 300px; display: flex; justify-content: center;"><canvas id="chart-status"></canvas></div>
+                </div>
+                <div class="table-container" style="padding: 24px;">
+                    <h4 style="margin-bottom: 16px; color: var(--text-muted); text-transform: uppercase;">User Activity Frequency</h4>
+                    <div style="height: 300px;"><canvas id="chart-activity"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Recent Logins Table -->
+            <h3 style="margin: 40px 0 24px 0; font-size: 22px;">Recent Logins</h3>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Mobile Number</th>
+                            <th>Status</th>
+                            <th>Login Count</th>
+                            <th>Last Login Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-logins-tbody">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
             </div>
         </main>
     </div>

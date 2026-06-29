@@ -1,116 +1,176 @@
-import { sessionManager } from './auth/session.js';
-import { mpinManager } from './auth/mpin.js';
-import { AutoLogout } from './auth/logout.js';
-import { SliderComponent } from './components/slider.js';
-import { VideoPopupComponent } from './components/video-popup.js';
-import { TelegramPopupComponent } from './components/telegram-popup.js';
-import { SuccessPopupComponent } from './components/success-popup.js';
-import { ToastComponent } from './components/toast.js';
-import { realtimeSlider } from './realtime/slider.js';
-import { realtimeSettings } from './realtime/settings.js';
-import { ModalBase } from '../../shared/components/modal-base.js';
+import { dbApi } from '../config/supabase.js';
+import { sharedAuth } from '../../../shared/js/auth.js';
+import { sharedUtils } from '../../../shared/js/utils.js';
+import { mpinHelper } from './auth/mpin.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Verify Session
-    const user = sessionManager.verifySession();
-    if (!user) return;
-
-    // 2. Fetch Live Settings
-    const settings = await realtimeSettings.getSettingsMap();
-    const mpinDelay = settings.mpin_delay_seconds ? Number(settings.mpin_delay_seconds) * 1000 : 2000;
-    if (settings.usdt_inr_ratio) {
-        const rateEl = document.getElementById('display-usdt-rate');
-        if (rateEl) rateEl.innerText = `1 USDT = ${settings.usdt_inr_ratio} INR`;
+    const currentUser = sharedAuth.getCurrentUser();
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
     }
 
-    // 3. Init Auto Logout
-    const logoutMins = settings.auto_logout_minutes ? Number(settings.auto_logout_minutes) : 30;
-    AutoLogout.init(logoutMins);
+    // Initialize MPIN helper
+    mpinHelper.init();
 
-    // Attach Logout Button
-    const logoutBtn = document.getElementById('btn-logout');
-    if (logoutBtn) logoutBtn.addEventListener('click', () => AutoLogout.logoutNow());
+    // 1. Fetch live data & settings
+    await loadHomeData();
 
-    // 4. Render Live Slider
-    const slider = new SliderComponent('slider-container');
-    await slider.render();
-    realtimeSlider.subscribe(() => slider.render());
+    // 2. Setup Realtime subscriptions (Without Refresh)
+    dbApi.subscribeToChanges('slider_images', () => loadHomeData());
+    dbApi.subscribeToChanges('banner_images', () => loadHomeData());
+    dbApi.subscribeToChanges('popup_video', () => loadHomeData());
+    dbApi.subscribeToChanges('telegram_popup', () => loadHomeData());
+    dbApi.subscribeToChanges('settings', () => loadHomeData());
 
-    // 5. Check MPIN Status & Execute Popup Flow
-    const mpinStatusEl = document.getElementById('display-mpin-status');
-    if (mpinManager.isMpinSet()) {
-        if (mpinStatusEl) mpinStatusEl.innerText = 'Set & Secured ✔';
-        if (mpinStatusEl) mpinStatusEl.style.color = 'var(--success)';
-    } else {
-        if (mpinStatusEl) mpinStatusEl.innerText = 'Pending (Action Required)';
-        if (mpinStatusEl) mpinStatusEl.style.color = 'var(--warning)';
+    // 3. Start Sequential Popups Flow
+    startPopupsFlow(currentUser);
 
-        // Trigger MPIN popup after delay
-        setTimeout(() => {
-            showMpinPopupFlow();
-        }, mpinDelay);
-    }
+    // Setup action listeners
+    const btnChat = document.getElementById('btn-floating-chat');
+    if (btnChat) btnChat.addEventListener('click', () => sharedUtils.showToast("Connecting to live support...", "success"));
 
-    // Manual triggers for video & telegram
-    const btnVideo = document.getElementById('btn-retrigger-video');
-    if (btnVideo) btnVideo.addEventListener('click', () => VideoPopupComponent.show());
-
-    const btnTelegram = document.getElementById('btn-retrigger-telegram');
-    if (btnTelegram) btnTelegram.addEventListener('click', () => TelegramPopupComponent.show());
+    const btnTopup = document.getElementById('btn-topup-action');
+    if (btnTopup) btnTopup.addEventListener('click', () => sharedUtils.showToast("Opening Top up menu...", "success"));
 });
 
-function showMpinPopupFlow() {
-    const content = `
-        <div class="popup-title">Create Security MPIN</div>
-        <div class="popup-desc">Please set a 4-digit MPIN to secure your high-profit transactions.</div>
-        <div class="mpin-inputs">
-            <input type="text" maxlength="1" class="mpin-input" id="m1" autocomplete="off">
-            <input type="text" maxlength="1" class="mpin-input" id="m2" autocomplete="off">
-            <input type="text" maxlength="1" class="mpin-input" id="m3" autocomplete="off">
-            <input type="text" maxlength="1" class="mpin-input" id="m4" autocomplete="off">
-        </div>
-        <button class="btn btn-primary" id="btn-submit-mpin">Save MPIN</button>
-    `;
+async function loadHomeData() {
+    const settings = await dbApi.select('settings');
+    const getSetting = (k, def) => {
+        const found = settings.find(s => s.key === k);
+        return found ? found.value : def;
+    };
 
-    ModalBase.create('mpin-popup-modal', content);
-    ModalBase.show('mpin-popup-modal');
+    // Update Ratio Card
+    const usdtRatio = getSetting('usdt_inr_ratio', '107.61');
+    const bonusRatio = getSetting('bonus_ratio', '4%');
+    const elUsdt = document.getElementById('usdt-ratio-text');
+    const elBonus = document.getElementById('bonus-ratio-text');
+    if (elUsdt) elUsdt.innerText = `1 USDT ≈ ${usdtRatio} INR`;
+    if (elBonus) elBonus.innerText = bonusRatio;
 
-    // Auto focus logic
-    const inputs = [document.getElementById('m1'), document.getElementById('m2'), document.getElementById('m3'), document.getElementById('m4')];
-    inputs.forEach((input, index) => {
-        input.addEventListener('input', (e) => {
-            if (e.target.value && index < 3) inputs[index + 1].focus();
-        });
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus();
-        });
-    });
-    inputs[0].focus();
+    // Load Sliders / Banners
+    const sliderEnabled = getSetting('slider_enabled', 'true') === 'true';
+    const sliderContainer = document.getElementById('home-slider-container');
 
-    document.getElementById('btn-submit-mpin').addEventListener('click', async () => {
-        const val = inputs.map(i => i.value).join('');
-        if (val.length !== 4 || !/^[0-9]{4}$/.test(val)) {
-            ToastComponent.error('Please enter a valid 4-digit MPIN.');
-            return;
+    if (sliderEnabled && sliderContainer) {
+        sliderContainer.style.display = 'block';
+        const sliders = await dbApi.select('slider_images', { is_enabled: true });
+        if (sliders.length > 0) {
+            sliders.sort((a, b) => a.display_order - b.display_order);
+            const active = sliders[0];
+            const promoImg = document.getElementById('promo-img');
+            if (promoImg) promoImg.src = active.image_url;
         }
+    } else if (sliderContainer) {
+        sliderContainer.style.display = 'none';
+    }
+}
 
-        try {
-            await mpinManager.setMpin(val);
-            ModalBase.hide('mpin-popup-modal');
-            const mpinStatusEl = document.getElementById('display-mpin-status');
-            if (mpinStatusEl) {
-                mpinStatusEl.innerText = 'Set & Secured ✔';
-                mpinStatusEl.style.color = 'var(--success)';
-            }
+async function startPopupsFlow(currentUser) {
+    const settings = await dbApi.select('settings');
+    const getSetting = (k, def) => {
+        const found = settings.find(s => s.key === k);
+        return found ? found.value : def;
+    };
 
-            // Sequential Flow: Success Popup -> Video Popup -> Telegram Popup
-            SuccessPopupComponent.show('Your security MPIN has been saved successfully!', () => {
-                VideoPopupComponent.show(() => {
-                    TelegramPopupComponent.show();
-                });
-            });
-        } catch (err) {
-            ToastComponent.error('Failed to save MPIN.');
-        }
-    });
+    const delay = parseInt(getSetting('mpin_delay_seconds', '2')) * 1000;
+
+    // Trigger MPIN Popup if MPIN is blank
+    if (!currentUser.mpin || currentUser.mpin === '') {
+        setTimeout(() => {
+            const mpinModal = document.getElementById('mpin-modal');
+            if (mpinModal) mpinModal.classList.add('active');
+        }, delay);
+    } else {
+        // If MPIN already set, jump straight to Video Popup after delay
+        setTimeout(() => {
+            showVideoPopup();
+        }, delay);
+    }
+
+    // Success Modal Continue Button -> Shows Video Popup
+    const btnSuccess = document.getElementById('btn-success-continue');
+    if (btnSuccess) {
+        btnSuccess.addEventListener('click', () => {
+            const successModal = document.getElementById('success-modal');
+            if (successModal) successModal.classList.remove('active');
+            showVideoPopup();
+        });
+    }
+
+    // Video Modal Continue/Close Button -> Shows Telegram Popup
+    const btnVideoDone = document.getElementById('btn-video-continue');
+    const btnVideoClose = document.getElementById('btn-close-video');
+    const videoPlayer = document.getElementById('popup-video-player');
+
+    const closeVideoHandler = () => {
+        if (videoPlayer) videoPlayer.pause();
+        const videoModal = document.getElementById('video-modal');
+        if (videoModal) videoModal.classList.remove('active');
+        showTelegramPopup();
+    };
+
+    if (btnVideoDone) btnVideoDone.addEventListener('click', closeVideoHandler);
+    if (btnVideoClose) btnVideoClose.addEventListener('click', closeVideoHandler);
+
+    // Telegram Modal Close Button -> Finishes Flow
+    const btnTelegramClose = document.getElementById('btn-close-telegram');
+    if (btnTelegramClose) {
+        btnTelegramClose.addEventListener('click', () => {
+            const telegramModal = document.getElementById('telegram-modal');
+            if (telegramModal) telegramModal.classList.remove('active');
+        });
+    }
+}
+
+async function showVideoPopup() {
+    const settings = await dbApi.select('settings');
+    const enabled = settings.find(s => s.key === 'video_popup_enabled')?.value !== 'false';
+    if (!enabled) {
+        showTelegramPopup();
+        return;
+    }
+
+    const videos = await dbApi.select('popup_video', { is_enabled: true });
+    if (videos.length === 0) {
+        showTelegramPopup();
+        return;
+    }
+
+    const v = videos[0];
+    const elTitle = document.getElementById('video-modal-title');
+    const elPlayer = document.getElementById('popup-video-player');
+
+    if (elTitle) elTitle.innerText = v.title;
+    if (elPlayer) {
+        elPlayer.src = v.video_url;
+        if (v.autoplay) elPlayer.play().catch(() => {});
+    }
+
+    const videoModal = document.getElementById('video-modal');
+    if (videoModal) videoModal.classList.add('active');
+}
+
+async function showTelegramPopup() {
+    const settings = await dbApi.select('settings');
+    const enabled = settings.find(s => s.key === 'telegram_popup_enabled')?.value !== 'false';
+    if (!enabled) return;
+
+    const telegrams = await dbApi.select('telegram_popup', { is_enabled: true });
+    if (telegrams.length === 0) return;
+
+    const t = telegrams[0];
+    const elImg = document.getElementById('telegram-popup-img');
+    const elTitle = document.getElementById('telegram-modal-title');
+    const elDesc = document.getElementById('telegram-modal-desc');
+    const elLink = document.getElementById('telegram-modal-link');
+
+    if (elImg) elImg.src = t.image_url;
+    if (elTitle) elTitle.innerText = t.title;
+    if (elDesc) elDesc.innerText = t.description;
+    if (elLink) elLink.href = t.telegram_link;
+
+    const telegramModal = document.getElementById('telegram-modal');
+    if (telegramModal) telegramModal.classList.add('active');
 }
