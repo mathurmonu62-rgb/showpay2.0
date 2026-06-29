@@ -162,18 +162,21 @@ export const dbApi = {
         }
     },
 
-    subscribeToChanges(table, callback) {
-        if (!isMockMode) {
-            return supabase
-                .channel('realtime:' + table)
-                .on('postgres_changes', { event: '*', schema: 'public', table: table }, payload => {
-                    callback(payload);
-                })
-                .subscribe();
-        } else {
-            window.addEventListener('mock_db_update', () => {
-                callback({ event: 'MOCK_UPDATE', table });
-            });
-        }
+    subscribeToChanges(table, onUpdate) {
+        if (isMockMode || !supabase) return { unsubscribe: () => {} };
+        return supabase.channel('public:' + table)
+            .on('postgres_changes', { event: '*', schema: 'public', table: table }, payload => {
+                onUpdate(payload);
+            }).subscribe();
+    }
+};
+
+export const storageApi = {
+    async uploadFile(bucket, path, file) {
+        if (!supabase) throw new Error('Supabase client not initialized');
+        const { data, error } = await supabase.storage.from(bucket).upload(path, file, { cacheControl: '3600', upsert: true });
+        if (error) throw error;
+        const { data: pubData } = supabase.storage.from(bucket).getPublicUrl(path);
+        return pubData.publicUrl;
     }
 };

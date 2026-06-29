@@ -1,21 +1,44 @@
-import { dbApi } from '../../shared/js/supabase.js';
+import { dbApi, storageApi } from '../../shared/js/supabase.js';
 import { sharedUtils } from '../../shared/js/utils.js';
 import './auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadSliders();
 
-    document.getElementById('btn-add-slider').addEventListener('click', async () => {
-        const title = prompt("Enter Slider Title:", "New High Profit Promo");
-        const image_url = prompt("Enter Image URL:", "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=1000&auto=format&fit=crop");
-        if (title && image_url) {
-            const all = await dbApi.select('slider_images');
-            await dbApi.insert('slider_images', { title, image_url, link_url: '#', display_order: all.length + 1, is_enabled: true });
-            await dbApi.insert('activity_logs', { action_type: 'Slider Update', description: `Added slider ${title}`, performed_by: 'Admin' });
-            sharedUtils.showToast("Slider added and broadcasted live!", "success");
-            loadSliders();
-        }
-    });
+    const fileInput = document.getElementById('slider-file-input');
+    const btnAdd = document.getElementById('btn-add-slider');
+
+    if (btnAdd && fileInput) {
+        btnAdd.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const title = prompt("Enter Slider Title:", "New High Profit Promo");
+            if (!title) return;
+
+            btnAdd.disabled = true;
+            btnAdd.innerText = "Uploading...";
+
+            try {
+                const path = `sliders/${Date.now()}_${file.name}`;
+                const image_url = await storageApi.uploadFile('showpay_assets', path, file);
+
+                const all = await dbApi.select('slider_images');
+                await dbApi.insert('slider_images', { title, image_url, link_url: '#', display_order: all.length + 1, is_enabled: true });
+                await dbApi.insert('activity_logs', { action_type: 'Slider Update', description: `Uploaded slider ${title}`, performed_by: 'Admin' });
+                sharedUtils.showToast("Slider uploaded from gallery and broadcasted live!", "success");
+                loadSliders();
+            } catch (err) {
+                sharedUtils.showToast("Upload failed: " + err.message, "error");
+            } finally {
+                btnAdd.disabled = false;
+                btnAdd.innerText = "➕ Upload from Gallery";
+                fileInput.value = '';
+            }
+        });
+    }
 });
 
 async function loadSliders() {

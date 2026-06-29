@@ -1,22 +1,45 @@
-import { dbApi } from '../../shared/js/supabase.js';
+import { dbApi, storageApi } from '../../shared/js/supabase.js';
 import { sharedUtils } from '../../shared/js/utils.js';
 import './auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadVideos();
 
-    document.getElementById('btn-update-video').addEventListener('click', async () => {
-        const url = prompt("Enter New Video URL:", "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4");
-        if (url) {
-            const videos = await dbApi.select('popup_video');
-            if (videos.length > 0) {
-                await dbApi.update('popup_video', { video_url: url }, { id: videos[0].id });
-                await dbApi.insert('activity_logs', { action_type: 'Video Update', description: `Updated popup video URL`, performed_by: 'Admin' });
-                sharedUtils.showToast("Video URL updated and broadcasted!", "success");
+    const fileInput = document.getElementById('video-file-input');
+    const btnUpdate = document.getElementById('btn-update-video');
+
+    if (btnUpdate && fileInput) {
+        btnUpdate.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            btnUpdate.disabled = true;
+            btnUpdate.innerText = "Uploading Video...";
+
+            try {
+                const path = `videos/${Date.now()}_${file.name}`;
+                const video_url = await storageApi.uploadFile('showpay_assets', path, file);
+
+                const videos = await dbApi.select('popup_video');
+                if (videos.length > 0) {
+                    await dbApi.update('popup_video', { video_url: video_url }, { id: videos[0].id });
+                } else {
+                    await dbApi.insert('popup_video', { title: 'How to use ShowPay Fast', video_url: video_url, autoplay: true, is_enabled: true });
+                }
+                await dbApi.insert('activity_logs', { action_type: 'Video Update', description: `Uploaded popup video from gallery`, performed_by: 'Admin' });
+                sharedUtils.showToast("Video uploaded from gallery and broadcasted!", "success");
                 loadVideos();
+            } catch (err) {
+                sharedUtils.showToast("Upload failed: " + err.message, "error");
+            } finally {
+                btnUpdate.disabled = false;
+                btnUpdate.innerText = "📁 Upload Video from Gallery";
+                fileInput.value = '';
             }
-        }
-    });
+        });
+    }
 });
 
 async function loadVideos() {

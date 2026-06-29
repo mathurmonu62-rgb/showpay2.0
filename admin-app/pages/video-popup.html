@@ -33,7 +33,10 @@
         <main class="admin-main">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <h2>Popup Video Management</h2>
-                <button class="btn btn-primary btn-sm" id="btn-update-video">✏️ Update Video URL</button>
+                <div>
+                    <input type="file" id="video-file-input" accept="video/*" style="display: none;">
+                    <button class="btn btn-primary btn-sm" id="btn-update-video">📁 Upload Video from Gallery</button>
+                </div>
             </div>
 
             <div class="table-container">
