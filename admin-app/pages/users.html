@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - ShowPay Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/css/base.css">
+    <link rel="stylesheet" href="../../user-app/css/common.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/users.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="admin-navbar">
+            <a href="dashboard.html" class="app-logo">ShowPay Admin</a>
+            <div class="admin-nav-links">
+                <a href="dashboard.html" class="admin-nav-link">Dashboard</a>
+                <a href="users.html" class="admin-nav-link active">Users</a>
+                <a href="slider.html" class="admin-nav-link">Sliders</a>
+                <a href="video-popup.html" class="admin-nav-link">Videos</a>
+                <a href="telegram-popup.html" class="admin-nav-link">Telegram</a>
+                <a href="settings.html" class="admin-nav-link">Settings</a>
+                <a href="trash.html" class="admin-nav-link">Trash</a>
+                <a href="notifications.html" class="admin-nav-link">Notifications</a>
+                <a href="activity-logs.html" class="admin-nav-link">Logs</a>
+                <a href="profile.html" class="admin-nav-link">Profile</a>
+                <button class="btn btn-danger btn-sm" id="admin-logout-btn">Logout</button>
+            </div>
+        </nav>
+
+        <main class="admin-main">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h2>User Management</h2>
+            </div>
+
+            <div class="table-container">
+                <div class="table-toolbar">
+                    <input type="text" id="user-search" placeholder="Search by mobile number..." class="search-input">
+                    <div style="display: flex; gap: 16px;">
+                        <select id="user-filter" class="filter-select">
+                            <option value="all">All Statuses</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="deleted">Deleted</option>
+                        </select>
+                        <select id="user-sort" class="filter-select">
+                            <option value="login_count">Sort by Login Count</option>
+                            <option value="last_login">Sort by Last Login</option>
+                        </select>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Mobile Number</th>
+                            <th>Password</th>
+                            <th>MPIN</th>
+                            <th>Status</th>
+                            <th>Login Count</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <!-- Populated dynamically via users.js -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="../js/users.js"></script>
+</body>
+</html>

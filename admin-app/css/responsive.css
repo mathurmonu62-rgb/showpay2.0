@@ -1,0 +1,15 @@
+/* Admin media queries */
+@media (max-width: 1024px) {
+    .admin-navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    .table-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-input {
+        width: 100%;
+    }
+}

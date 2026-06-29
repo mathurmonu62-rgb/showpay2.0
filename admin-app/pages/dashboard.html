@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ShowPay Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/css/base.css">
+    <link rel="stylesheet" href="../../user-app/css/common.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="admin-navbar">
+            <a href="dashboard.html" class="app-logo">ShowPay Admin</a>
+            <div class="admin-nav-links">
+                <a href="dashboard.html" class="admin-nav-link active">Dashboard</a>
+                <a href="users.html" class="admin-nav-link">Users</a>
+                <a href="slider.html" class="admin-nav-link">Sliders</a>
+                <a href="video-popup.html" class="admin-nav-link">Videos</a>
+                <a href="telegram-popup.html" class="admin-nav-link">Telegram</a>
+                <a href="settings.html" class="admin-nav-link">Settings</a>
+                <a href="trash.html" class="admin-nav-link">Trash</a>
+                <a href="notifications.html" class="admin-nav-link">Notifications</a>
+                <a href="activity-logs.html" class="admin-nav-link">Logs</a>
+                <a href="profile.html" class="admin-nav-link">Profile</a>
+                <button class="btn btn-danger btn-sm" id="admin-logout-btn">Logout</button>
+            </div>
+        </nav>
+
+        <main class="admin-main">
+            <h2 style="margin-bottom: 28px;">System Overview</h2>
+
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Total Registered Users</div>
+                    <div class="stat-value" id="stat-total-users">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Pending Verifications</div>
+                    <div class="stat-value" id="stat-pending-users">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Active Live Sliders</div>
+                    <div class="stat-value" id="stat-slider-count">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Popup Videos</div>
+                    <div class="stat-value" id="stat-video-count">0</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="../js/dashboard.js"></script>
+</body>
+</html>

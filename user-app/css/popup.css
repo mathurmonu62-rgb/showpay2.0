@@ -1,0 +1,102 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: var(--bg-main);
+    width: 90%;
+    max-width: 420px;
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow: var(--modal-shadow);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.popup-title {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.popup-desc {
+    color: var(--text-muted);
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.mpin-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.mpin-input {
+    width: 54px;
+    height: 64px;
+    border: 2px solid var(--border-color);
+    border-radius: 14px;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    background: var(--bg-secondary);
+    outline: none;
+    transition: all 0.2s;
+}
+
+.mpin-input:focus {
+    border-color: var(--primary);
+    background: var(--bg-main);
+    box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.popup-video-container {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background: #000;
+}
+
+.popup-video-container video {
+    width: 100%;
+    display: block;
+}
+
+.telegram-logo-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px auto;
+}
+
+.telegram-logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

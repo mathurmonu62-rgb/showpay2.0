@@ -1,0 +1,9 @@
+/* Admin popup styling */
+.admin-modal-content {
+    background: var(--bg-main);
+    width: 90%;
+    max-width: 500px;
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: var(--modal-shadow);
+}

@@ -1,0 +1,11 @@
+/* Media queries for user application responsiveness */
+@media (min-width: 768px) {
+    .user-layout {
+        max-width: 540px;
+        padding-top: 32px;
+    }
+    
+    .login-card {
+        padding: 44px 36px;
+    }
+}

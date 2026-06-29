@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShowPay - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/css/base.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/slider.css">
+    <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="user-layout">
+        <div class="header-title">SHOWPAY</div>
+
+        <!-- Live Slider Component Container -->
+        <div id="slider-container" class="slider-container">
+            <!-- Populated dynamically via slider.js -->
+        </div>
+
+        <!-- Static Promotion / USDT Ratio Card -->
+        <div class="usdt-card">
+            <div class="usdt-label">USDT/INR Exchange Rate</div>
+            <div class="usdt-rate" id="display-usdt-rate">1 USDT = 107.61 INR</div>
+        </div>
+
+        <div class="welcome-card">
+            <h3>Welcome to ShowPay 2.0</h3>
+            <p>Your ultimate real-time high-profit platform.</p>
+            <button class="btn btn-primary" id="btn-retrigger-video">📹 Replay Video Guide</button>
+            <button class="btn btn-secondary" id="btn-retrigger-telegram" style="margin-top: 12px;">📢 Open Telegram Invite</button>
+        </div>
+
+        <div class="welcome-card" style="margin-top: 16px;">
+            <h3>User Security</h3>
+            <p>MPIN Status: <span id="display-mpin-status" style="font-weight: 600;">Checking...</span></p>
+            <button class="btn btn-danger" id="btn-logout" style="margin-top: 16px;">Logout</button>
+        </div>
+    </div>
+
+    <!-- Modal placeholders (rendered dynamically by components) -->
+    <div id="modal-root"></div>
+
+    <!-- Modular JS entrypoint for home -->
+    <script type="module" src="../js/home.js"></script>
+</body>
+</html>

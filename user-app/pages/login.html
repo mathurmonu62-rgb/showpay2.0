@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShowPay - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/css/base.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="user-layout">
+        <div class="header-title">SHOWPAY</div>
+
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Login</h2>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <span class="input-icon">📞</span>
+                        <input type="tel" id="login-mobile" placeholder="Mobile Number" class="form-input" required maxlength="10" pattern="[0-9]{10}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="login-password" placeholder="Password" class="form-input" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-login" id="login-submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modular JS entrypoint for login -->
+    <script type="module" src="../js/auth/login.js"></script>
+</body>
+</html>

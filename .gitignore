@@ -1,0 +1,11 @@
+# Environment files
+.env
+.env.local
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Logs and debug
+*.log
+npm-debug.log*

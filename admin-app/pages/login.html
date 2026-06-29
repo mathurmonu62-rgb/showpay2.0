@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - ShowPay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/css/base.css">
+    <link rel="stylesheet" href="../../user-app/css/common.css">
+    <link rel="stylesheet" href="../../user-app/css/login.css">
+</head>
+<body>
+    <div class="user-layout">
+        <div class="header-title">ADMIN PORTAL</div>
+
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Secure Login</h2>
+            </div>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" id="admin-email" placeholder="Admin Email" class="form-input" required value="admin@showpay.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="admin-password" placeholder="Password" class="form-input" required value="admin@0123">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-login" id="admin-submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../js/auth.js"></script>
+</body>
+</html>

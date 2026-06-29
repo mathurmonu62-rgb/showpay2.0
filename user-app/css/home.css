@@ -1,0 +1,41 @@
+.usdt-card {
+    background: linear-gradient(135deg, #0084ff 0%, #005bb5 100%);
+    color: white;
+    padding: 24px;
+    border-radius: 20px;
+    margin: 20px 0;
+    box-shadow: 0 10px 15px -3px rgba(0, 132, 255, 0.3);
+}
+
+.usdt-label {
+    font-size: 14px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.usdt-rate {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.welcome-card {
+    background: var(--bg-main);
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.welcome-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.welcome-card p {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 20px;
+}
