@@ -61,6 +61,11 @@ export const sharedAuth = {
         return session ? JSON.parse(session) : null;
     },
 
+    setCurrentUser(user) {
+        localStorage.setItem('showpay_user_session', JSON.stringify(user));
+    },
+
+
     getCurrentAdmin() {
         const session = localStorage.getItem('showpay_admin_session');
         return session ? JSON.parse(session) : null;

@@ -1,7 +1,8 @@
-import { dbApi } from '../config/supabase.js';
+import { dbApi } from './config/supabase.js';
 import { sharedAuth } from '../../../shared/js/auth.js';
 import { sharedUtils } from '../../../shared/js/utils.js';
 import { mpinHelper } from './auth/mpin.js';
+
 
 document.addEventListener('DOMContentLoaded', async () => {
     const currentUser = sharedAuth.getCurrentUser();

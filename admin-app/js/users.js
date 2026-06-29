@@ -9,7 +9,7 @@ import './auth.js';
 document.addEventListener('DOMContentLoaded', async () => {
     const path = window.location.pathname;
 
-    if (path.includes('users.html')) {
+    if (path.includes('users.html') || path.endsWith('/users')) {
         await renderUsersTable();
 
         document.getElementById('user-search').addEventListener('input', () => renderUsersTable());
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    if (path.includes('user-details.html')) {
+    if (path.includes('user-details.html') || path.endsWith('/user-details')) {
         await renderUserDetails();
     }
 });

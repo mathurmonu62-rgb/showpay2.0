@@ -1,6 +1,7 @@
-import { dbApi } from '../../config/supabase.js';
-import { sharedAuth } from '../../../../shared/js/auth.js';
-import { sharedUtils } from '../../../../shared/js/utils.js';
+import { dbApi } from '../config/supabase.js';
+import { sharedAuth } from '../../../shared/js/auth.js';
+import { sharedUtils } from '../../../shared/js/utils.js';
+
 
 export const mpinHelper = {
     init() {
