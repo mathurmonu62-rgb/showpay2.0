@@ -6,7 +6,8 @@ export const sessionManager = {
     },
     verifySession() {
         const user = this.getUser();
-        if (!user && !window.location.pathname.includes('login.html')) {
+        const isLoginPage = window.location.pathname.includes('login.html') || window.location.pathname.endsWith('/login');
+        if (!user && !isLoginPage) {
             window.location.href = 'login.html';
             return null;
         }

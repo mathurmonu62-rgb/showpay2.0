@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (!window.location.pathname.includes('login.html')) {
+    const isLoginPage = window.location.pathname.includes('login.html') || window.location.pathname.endsWith('/login');
+    if (!isLoginPage) {
         const currentAdmin = sharedAuth.getCurrentAdmin();
         if (!currentAdmin) {
             window.location.href = 'login.html';
