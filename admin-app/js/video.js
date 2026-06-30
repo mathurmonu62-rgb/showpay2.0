@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnUpdate.innerText = "Uploading Video...";
 
             try {
-                const path = `videos/${Date.now()}_${file.name}`;
-                const video_url = await storageApi.uploadFile('showpay_assets', path, file);
+                const path = `${Date.now()}_${file.name}`;
+                const video_url = await storageApi.uploadFile('popup_video', path, file);
 
                 const videos = await dbApi.select('popup_video');
                 if (videos.length > 0) {

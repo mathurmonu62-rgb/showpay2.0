@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnAdd.innerText = "Uploading...";
 
             try {
-                const path = `sliders/${Date.now()}_${file.name}`;
-                const image_url = await storageApi.uploadFile('showpay_assets', path, file);
+                const path = `${Date.now()}_${file.name}`;
+                const image_url = await storageApi.uploadFile('slider_images', path, file);
 
                 const all = await dbApi.select('slider_images');
                 await dbApi.insert('slider_images', { title, image_url, link_url: '#', display_order: all.length + 1, is_enabled: true });

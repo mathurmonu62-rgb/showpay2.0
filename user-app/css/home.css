@@ -1,11 +1,11 @@
 body {
-    background-color: #f5f7fa;
+    background-color: #f4f7f6; /* Gray background on desktop */
     margin: 0;
     padding: 0;
     font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center; /* Vertically center on desktop */
     min-height: 100vh;
     color: #333333;
 }
@@ -13,12 +13,22 @@ body {
 .app-container {
     width: 100%;
     max-width: 480px;
-    min-height: 100vh;
+    height: 100vh; /* Full height on mobile */
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
     position: relative;
-    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08); /* Desktop shadow */
+}
+
+@media (min-width: 481px) {
+    .app-container {
+        height: 90vh; /* Not full height on desktop, looks like a phone */
+        max-height: 800px;
+        min-height: 600px;
+        border-radius: 24px;
+        overflow: hidden;
+    }
 }
 
 /* Top Header */
