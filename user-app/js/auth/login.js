@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (mobile.length !== 10 || !/^\d{10}$/.test(mobile)) {
+            sharedUtils.showToast("Mobile number must be exactly 10 digits", "error");
+            return;
+        }
+
+        if (password.length > 12) {
+            sharedUtils.showToast("Password cannot exceed 12 characters", "error");
+            return;
+        }
+
+
         submitBtn.disabled = true;
         submitBtn.innerText = "LOGGING IN...";
 

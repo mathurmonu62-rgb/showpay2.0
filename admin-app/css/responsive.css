@@ -1,9 +1,20 @@
-/* Admin media queries */
+/* Admin Responsive Styles */
+
+/* Base responsiveness for medium screens */
 @media (max-width: 1024px) {
     .admin-navbar {
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
+        padding: 16px;
+    }
+    .admin-nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .admin-main {
+        padding: 24px;
     }
     .table-toolbar {
         flex-direction: column;
@@ -11,5 +22,96 @@
     }
     .search-input {
         width: 100%;
+        margin-bottom: 8px;
+    }
+    .filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+    .filter-group select, 
+    .filter-group input, 
+    .filter-group button {
+        flex: 1;
+        min-width: 140px;
+    }
+}
+
+/* Mobile responsiveness for small screens */
+@media (max-width: 768px) {
+    .admin-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .app-logo {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .admin-nav-links {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-nav-link {
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    .admin-main {
+        padding: 16px;
+    }
+
+    .admin-main h2 {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    /* Stats Dashboard Grid */
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Table Responsiveness */
+    .table-container {
+        overflow-x: auto;
+        border-radius: 8px;
+        padding: 0;
+    }
+    
+    .data-table th, 
+    .data-table td {
+        padding: 12px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    /* Form and Action areas */
+    .action-btns {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    #btn-download-all-pdf {
+        width: 100%;
+        margin-top: 8px;
     }
 }
