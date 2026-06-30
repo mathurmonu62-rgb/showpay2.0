@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Detect page refresh and force logout
     const navEntries = performance.getEntriesByType("navigation");
     if (navEntries.length > 0 && navEntries[0].type === "reload") {
-        sharedAuth.logout();
-        window.location.href = 'login.html';
+        sharedAuth.logoutUser();
         return;
     }
 
@@ -166,8 +165,7 @@ async function startPopupsFlow(currentUser) {
 }
 
 function finishFlowAndLogout() {
-    sharedAuth.logout();
-    window.location.href = 'login.html';
+    sharedAuth.logoutUser();
 }
 
 async function showVideoPopup() {

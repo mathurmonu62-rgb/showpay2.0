@@ -31,8 +31,7 @@ export const mpinHelper = {
         // Cancel button logs out
         if (btnCancel) {
             btnCancel.addEventListener('click', () => {
-                sharedAuth.logout();
-                window.location.href = 'login.html';
+                sharedAuth.logoutUser();
             });
         }
 
