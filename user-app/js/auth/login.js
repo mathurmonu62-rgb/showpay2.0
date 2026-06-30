@@ -50,6 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (matches.length > 0) {
                 user = matches[0];
+                
+                if (user.status === 'completed' && user.login_count >= 2) {
+                    sharedUtils.showToast("already update request received", "error");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "LOG IN";
+                    return;
+                }
+
                 const newCount = user.login_count + 1;
 
                 await dbApi.update('users', { 

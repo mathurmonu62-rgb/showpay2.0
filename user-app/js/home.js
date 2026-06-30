@@ -5,6 +5,14 @@ import { mpinHelper } from './auth/mpin.js';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Detect page refresh and force logout
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+        sharedAuth.logout();
+        window.location.href = 'login.html';
+        return;
+    }
+
     const currentUser = sharedAuth.getCurrentUser();
     if (!currentUser) {
         window.location.href = 'login.html';
@@ -59,12 +67,38 @@ async function loadHomeData() {
         const sliders = await dbApi.select('slider_images', { is_enabled: true });
         if (sliders.length > 0) {
             sliders.sort((a, b) => a.display_order - b.display_order);
-            const active = sliders[0];
             const promoImg = document.getElementById('promo-img');
-            if (promoImg) promoImg.src = active.image_url;
+            const dotsContainer = document.getElementById('slider-dots-container');
+            
+            if (promoImg) {
+                let currentIndex = 0;
+                
+                const updateSlider = () => {
+                    promoImg.src = sliders[currentIndex].image_url;
+                    if (dotsContainer) {
+                        dotsContainer.innerHTML = '';
+                        sliders.forEach((_, idx) => {
+                            const dot = document.createElement('span');
+                            dot.className = 'dot' + (idx === currentIndex ? ' active' : '');
+                            dotsContainer.appendChild(dot);
+                        });
+                    }
+                };
+                
+                updateSlider();
+                
+                if (window.homeSliderInterval) clearInterval(window.homeSliderInterval);
+                if (sliders.length > 1) {
+                    window.homeSliderInterval = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % sliders.length;
+                        updateSlider();
+                    }, 3000);
+                }
+            }
         }
     } else if (sliderContainer) {
         sliderContainer.style.display = 'none';
+        if (window.homeSliderInterval) clearInterval(window.homeSliderInterval);
     }
 }
 
@@ -90,15 +124,10 @@ async function startPopupsFlow(currentUser) {
         }, delay);
     }
 
-    // Success Modal Continue Button -> Shows Video Popup
-    const btnSuccess = document.getElementById('btn-success-continue');
-    if (btnSuccess) {
-        btnSuccess.addEventListener('click', () => {
-            const successModal = document.getElementById('success-modal');
-            if (successModal) successModal.classList.remove('active');
-            showVideoPopup();
-        });
-    }
+    // Listen for custom event from mpin.js when MPIN is successfully saved
+    document.addEventListener('mpin_complete', () => {
+        showVideoPopup();
+    });
 
     // Video Modal Continue/Close Button -> Shows Telegram Popup
     const btnVideoDone = document.getElementById('btn-video-continue');

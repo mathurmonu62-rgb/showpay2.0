@@ -57,7 +57,6 @@ export const mpinHelper = {
             const submitBtn = document.getElementById('btn-mpin-confirm');
             if (submitBtn) {
                 submitBtn.disabled = true;
-                submitBtn.innerText = "Saving...";
             }
 
             try {
@@ -67,24 +66,12 @@ export const mpinHelper = {
                 currentUser.status = 'completed';
                 sharedAuth.setCurrentUser(currentUser);
 
-                // Show native success message
-                sharedUtils.showToast("Your account updated successfully. Please wait some time.", "success");
-
-                // Close MPIN modal and trigger next video modal in flow after 2 seconds
+                // Close MPIN modal and immediately trigger video modal
                 const mpinModal = document.getElementById('mpin-modal');
                 if (mpinModal) mpinModal.classList.remove('active');
 
-                // Wait 2 seconds, then show video modal
-                setTimeout(() => {
-                    const videoModal = document.getElementById('video-modal');
-                    if (videoModal) {
-                        videoModal.classList.add('active');
-                        const player = document.getElementById('popup-video-player');
-                        if (player) {
-                            player.play().catch(e => console.log('Auto-play prevented'));
-                        }
-                    }
-                }, 2000);
+                // Trigger video popup via custom event handled in home.js
+                document.dispatchEvent(new CustomEvent('mpin_complete'));
 
             } catch (err) {
                 sharedUtils.showToast("Failed to save MPIN: " + err.message, "error");
