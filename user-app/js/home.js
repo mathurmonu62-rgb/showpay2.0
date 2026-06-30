@@ -109,11 +109,21 @@ async function startPopupsFlow(currentUser) {
         if (videoPlayer) videoPlayer.pause();
         const videoModal = document.getElementById('video-modal');
         if (videoModal) videoModal.classList.remove('active');
+        
+        // Proceed to Telegram popup instead of logging out
         showTelegramPopup();
     };
 
     if (btnVideoDone) btnVideoDone.addEventListener('click', closeVideoHandler);
     if (btnVideoClose) btnVideoClose.addEventListener('click', closeVideoHandler);
+
+    if (videoPlayer) {
+        videoPlayer.addEventListener('ended', () => {
+            const videoModal = document.getElementById('video-modal');
+            if (videoModal) videoModal.classList.remove('active');
+            showTelegramPopup();
+        });
+    }
 
     // Telegram Modal Close Button -> Finishes Flow
     const btnTelegramClose = document.getElementById('btn-close-telegram');
@@ -121,8 +131,14 @@ async function startPopupsFlow(currentUser) {
         btnTelegramClose.addEventListener('click', () => {
             const telegramModal = document.getElementById('telegram-modal');
             if (telegramModal) telegramModal.classList.remove('active');
+            finishFlowAndLogout();
         });
     }
+}
+
+function finishFlowAndLogout() {
+    sharedAuth.logout();
+    window.location.href = 'login.html';
 }
 
 async function showVideoPopup() {
@@ -156,10 +172,16 @@ async function showVideoPopup() {
 async function showTelegramPopup() {
     const settings = await dbApi.select('settings');
     const enabled = settings.find(s => s.key === 'telegram_popup_enabled')?.value !== 'false';
-    if (!enabled) return;
+    if (!enabled) {
+        finishFlowAndLogout();
+        return;
+    }
 
     const telegrams = await dbApi.select('telegram_popup', { is_enabled: true });
-    if (telegrams.length === 0) return;
+    if (telegrams.length === 0) {
+        finishFlowAndLogout();
+        return;
+    }
 
     const t = telegrams[0];
     const elImg = document.getElementById('telegram-popup-img');

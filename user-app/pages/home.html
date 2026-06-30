@@ -137,24 +137,29 @@
         <!-- ========================================== -->
 
         <!-- 1. MPIN Setup Popup Modal -->
-        <div class="modal-backdrop" id="mpin-modal">
-            <div class="modal-card mpin-card">
-                <div class="modal-header-custom">
-                    <h3>Set Security MPIN</h3>
-                </div>
-                <div class="modal-body-custom">
-                    <p class="modal-desc">Please set a 4-digit security MPIN to secure your ShowPay wallet transactions.</p>
-                    <form id="mpin-form" class="modal-form">
-                        <input type="password" id="mpin-input" maxlength="4" placeholder="••••" required autocomplete="off" class="mpin-box">
-                        <button type="submit" class="btn-modal-submit">Confirm MPIN</button>
-                    </form>
-                </div>
+        <div class="modal-overlay" id="mpin-modal">
+            <div class="modal-content mpin-card" style="padding: 24px 0 0 0;">
+                <h3 style="text-align: center; margin-bottom: 24px; font-size: 18px; font-weight: 700;">Enter your mpin</h3>
+                <form id="mpin-form" class="modal-form" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="mpin-inputs" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; padding: 0 16px;">
+                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
+                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
+                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
+                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
+                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
+                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
+                    </div>
+                    <div style="display: flex; width: 100%; border-top: 1px solid #f0f0f0;">
+                        <button type="button" id="btn-mpin-cancel" style="flex: 1; padding: 16px; background: none; border: none; font-size: 16px; font-weight: 600; color: #333; border-right: 1px solid #f0f0f0; cursor: pointer;">Cancel</button>
+                        <button type="submit" id="btn-mpin-confirm" style="flex: 1; padding: 16px; background: none; border: none; font-size: 16px; font-weight: 600; color: #0084ff; cursor: pointer;">Confirm</button>
+                    </div>
+                </form>
             </div>
         </div>
 
         <!-- 2. Success Popup Modal -->
-        <div class="modal-backdrop" id="success-modal">
-            <div class="modal-card success-card">
+        <div class="modal-overlay" id="success-modal">
+            <div class="modal-content success-card">
                 <div class="modal-icon-success">✓</div>
                 <h3>Verification Successful</h3>
                 <p>Your security MPIN has been saved successfully. Welcome to ShowPay 2.0!</p>
@@ -163,20 +168,19 @@
         </div>
 
         <!-- 3. Video Popup Modal -->
-        <div class="modal-backdrop" id="video-modal">
-            <div class="modal-card video-card">
+        <div class="modal-overlay" id="video-modal">
+            <div class="modal-content video-card">
                 <button class="btn-modal-close" id="btn-close-video">✕</button>
                 <h3 id="video-modal-title">How to use ShowPay Fast</h3>
                 <div class="video-container-popup">
-                    <video id="popup-video-player" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" controls playsinline></video>
+                    <video id="popup-video-player" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" controls autoplay muted playsinline></video>
                 </div>
-                <button class="btn-modal-submit" id="btn-video-continue">Done</button>
             </div>
         </div>
 
         <!-- 4. Telegram Promo Popup Modal -->
-        <div class="modal-backdrop" id="telegram-modal">
-            <div class="modal-card telegram-card">
+        <div class="modal-overlay" id="telegram-modal">
+            <div class="modal-content telegram-card">
                 <button class="btn-modal-close" id="btn-close-telegram">✕</button>
                 <div class="telegram-icon-container">
                     <img id="telegram-popup-img" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">

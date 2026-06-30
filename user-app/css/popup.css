@@ -57,23 +57,22 @@
     margin-bottom: 28px;
 }
 
-.mpin-input {
-    width: 54px;
-    height: 64px;
-    border: 2px solid var(--border-color);
-    border-radius: 14px;
-    font-size: 28px;
+.mpin-box {
+    width: 45px;
+    height: 45px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 24px;
     font-weight: 700;
     text-align: center;
-    background: var(--bg-secondary);
+    background: transparent;
     outline: none;
     transition: all 0.2s;
 }
 
-.mpin-input:focus {
-    border-color: var(--primary);
-    background: var(--bg-main);
-    box-shadow: 0 0 0 4px var(--primary-light);
+.mpin-box:focus {
+    border-color: #0084ff;
+    box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.1);
 }
 
 .popup-video-container {
