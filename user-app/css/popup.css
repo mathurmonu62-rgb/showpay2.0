@@ -45,15 +45,17 @@
    MPIN POPUP (matches Photo 2 exactly)
    ============================================ */
 .mpin-card {
-    padding: 28px 0 0 0;
+    padding: 32px 0 0 0;
+    width: 340px; /* Slightly wider to match photo */
+    border-radius: 18px;
 }
 
 .mpin-title {
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
-    color: #1a1a1a;
-    margin: 0 0 28px 0;
+    color: #333333;
+    margin: 0 0 24px 0;
     padding: 0 20px;
 }
 
@@ -65,22 +67,22 @@
 
 .mpin-inputs {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     justify-content: center;
     margin-bottom: 32px;
     padding: 0 16px;
 }
 
 .mpin-box {
-    width: 42px;
+    width: 44px;
     height: 48px;
-    border: 1.5px solid #dde1e7;
-    border-radius: 10px;
-    font-size: 22px;
-    font-weight: 700;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 600;
     text-align: center;
     background: #ffffff;
-    color: #1a1a1a;
+    color: #333333;
     outline: none;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
@@ -90,58 +92,57 @@
 
 .mpin-box:focus {
     border-color: #0084ff;
-    box-shadow: 0 0 0 3px rgba(0, 132, 255, 0.12);
-    background: #f8fbff;
+    box-shadow: none;
+    background: #ffffff;
 }
 
 .mpin-box.filled {
     border-color: #0084ff;
-    background: #f0f7ff;
 }
 
 .mpin-action-row {
     display: flex;
     width: 100%;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid #e5e5e5;
 }
 
 .mpin-btn-cancel {
     flex: 1;
-    padding: 18px 0;
+    padding: 16px 0;
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
-    color: #444;
+    color: #333333;
     cursor: pointer;
-    border-right: 1px solid #f0f0f0;
+    border-right: 1px solid #e5e5e5;
     font-family: 'Inter', sans-serif;
     transition: background 0.2s;
 }
 
 .mpin-btn-cancel:hover {
-    background: #f8f8f8;
+    background: #f9f9f9;
 }
 
 .mpin-btn-confirm {
     flex: 1;
-    padding: 18px 0;
+    padding: 16px 0;
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
-    color: #0084ff;
+    color: #007aff; /* iOS blue style */
     cursor: pointer;
     font-family: 'Inter', sans-serif;
     transition: background 0.2s;
 }
 
 .mpin-btn-confirm:hover {
-    background: #f0f7ff;
+    background: #f9f9f9;
 }
 
 .mpin-btn-confirm:disabled {
-    color: #9ca3af;
+    color: #a0c4ff;
     cursor: not-allowed;
 }
 
