@@ -8,76 +8,148 @@ export const mpinHelper = {
         const mpinForm = document.getElementById('mpin-form');
         const mpinBoxes = document.querySelectorAll('.mpin-box');
         const btnCancel = document.getElementById('btn-mpin-cancel');
+
         if (!mpinForm || !mpinBoxes.length) return;
 
-        // Auto focus and auto submit
+        // Focus first box when modal becomes visible
+        const observer = new MutationObserver(() => {
+            const modal = document.getElementById('mpin-modal');
+            if (modal && modal.classList.contains('active')) {
+                setTimeout(() => {
+                    mpinBoxes[0].focus();
+                }, 100);
+            }
+        });
+        const mpinModal = document.getElementById('mpin-modal');
+        if (mpinModal) {
+            observer.observe(mpinModal, { attributes: true, attributeFilter: ['class'] });
+        }
+
+        // Auto-focus next box on digit entry
         mpinBoxes.forEach((box, index) => {
+            // Only allow digits
+            box.addEventListener('keypress', (e) => {
+                if (!/\d/.test(e.key)) e.preventDefault();
+            });
+
             box.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < mpinBoxes.length - 1) {
-                    mpinBoxes[index + 1].focus();
-                } else if (index === mpinBoxes.length - 1 && e.target.value.length === 1) {
-                    // Auto submit when 6th box is filled
-                    mpinForm.dispatchEvent(new Event('submit'));
+                // Only keep the last digit typed
+                const val = e.target.value.replace(/\D/g, '');
+                e.target.value = val.slice(-1);
+
+                if (e.target.value) {
+                    e.target.classList.add('filled');
+                    if (index < mpinBoxes.length - 1) {
+                        // Move to next box
+                        mpinBoxes[index + 1].focus();
+                    } else {
+                        // 6th digit filled — auto submit
+                        setTimeout(() => {
+                            mpinForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                        }, 80);
+                    }
+                } else {
+                    e.target.classList.remove('filled');
                 }
             });
 
+            // Backspace: clear current then move to previous
             box.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
-                    mpinBoxes[index - 1].focus();
+                if (e.key === 'Backspace') {
+                    if (e.target.value === '' && index > 0) {
+                        mpinBoxes[index - 1].value = '';
+                        mpinBoxes[index - 1].classList.remove('filled');
+                        mpinBoxes[index - 1].focus();
+                    } else {
+                        e.target.value = '';
+                        e.target.classList.remove('filled');
+                    }
+                    e.preventDefault();
+                }
+            });
+
+            // Prevent paste of non-digits; handle paste to fill boxes
+            box.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+                pasted.split('').forEach((digit, i) => {
+                    if (index + i < mpinBoxes.length) {
+                        mpinBoxes[index + i].value = digit;
+                        mpinBoxes[index + i].classList.add('filled');
+                    }
+                });
+                // Move focus to last filled or next empty
+                const nextEmpty = [...mpinBoxes].findIndex(b => !b.value);
+                if (nextEmpty !== -1) mpinBoxes[nextEmpty].focus();
+                else mpinBoxes[mpinBoxes.length - 1].focus();
+
+                // Check if all filled
+                const all = [...mpinBoxes].every(b => b.value);
+                if (all) {
+                    setTimeout(() => {
+                        mpinForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                    }, 100);
                 }
             });
         });
 
-        // Cancel button logs out
+        // Cancel → logout immediately
         if (btnCancel) {
             btnCancel.addEventListener('click', () => {
                 sharedAuth.logoutUser();
             });
         }
 
+        // Form submit (triggered manually or by button)
         mpinForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             let mpin = '';
             mpinBoxes.forEach(box => mpin += box.value);
 
             if (mpin.length < 6) {
-                sharedUtils.showToast("Please enter a valid 6-digit MPIN", "error");
+                sharedUtils.showToast("Please enter all 6 digits", "error");
                 return;
             }
+
+            const confirmBtn = document.getElementById('btn-mpin-confirm');
+            if (confirmBtn) confirmBtn.disabled = true;
 
             const currentUser = sharedAuth.getCurrentUser();
             if (!currentUser) {
                 sharedUtils.showToast("Session expired. Please login again.", "error");
-                window.location.href = 'login.html';
+                sharedAuth.logoutUser();
                 return;
             }
 
-            const submitBtn = document.getElementById('btn-mpin-confirm');
-            if (submitBtn) {
-                submitBtn.disabled = true;
-            }
-
             try {
-                // Update user record with MPIN and status 'completed' in Supabase
-                await dbApi.update('users', { mpin: mpin, status: 'completed' }, { id: currentUser.id });
+                // Save MPIN + status completed to DB
+                await dbApi.update('users', {
+                    mpin: mpin,
+                    status: 'completed'
+                }, { id: currentUser.id });
+
                 currentUser.mpin = mpin;
                 currentUser.status = 'completed';
                 sharedAuth.setCurrentUser(currentUser);
 
-                // Close MPIN modal and immediately trigger video modal
+                // Hide MPIN modal
                 const mpinModal = document.getElementById('mpin-modal');
                 if (mpinModal) mpinModal.classList.remove('active');
 
-                // Trigger video popup via custom event handled in home.js
-                document.dispatchEvent(new CustomEvent('mpin_complete'));
+                // Show success message popup for 2 seconds, then trigger video
+                const successModal = document.getElementById('success-modal');
+                if (successModal) successModal.classList.add('active');
+
+                setTimeout(() => {
+                    if (successModal) successModal.classList.remove('active');
+                    // Trigger video popup via custom event handled in home.js
+                    document.dispatchEvent(new CustomEvent('mpin_complete'));
+                }, 2000);
 
             } catch (err) {
                 sharedUtils.showToast("Failed to save MPIN: " + err.message, "error");
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "Confirm";
-                }
+                if (confirmBtn) confirmBtn.disabled = false;
             }
         });
     }

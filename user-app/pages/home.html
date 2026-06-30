@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Home - ShowPay</title>
+    <meta name="description" content="ShowPay Home - View your balance, top up, and manage your account.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../shared/css/base.css">
     <link rel="stylesheet" href="../css/common.css">
@@ -18,7 +19,7 @@
         <header class="home-header">
             <div class="logo-title">ShowPay</div>
             <div class="header-icon" id="btn-info-header">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0084ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0084ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="16" x2="12" y2="12"></line>
                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -30,9 +31,9 @@
         <main class="home-main">
             <!-- Promo Slider Banner -->
             <div class="slider-wrapper" id="home-slider-container">
-                <div class="promo-banner" style="padding: 0; display: block; height: 150px; background: none;">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop" id="promo-img" alt="Promo Banner" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
-                    <div class="slider-dots" id="slider-dots-container" style="z-index: 10; bottom: 8px;">
+                <div class="slider-track-outer">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" id="promo-img" alt="Promo Banner" class="slider-img">
+                    <div class="slider-dots" id="slider-dots-container">
                         <span class="dot active"></span>
                         <span class="dot"></span>
                         <span class="dot"></span>
@@ -47,7 +48,7 @@
                 <div class="ratio-left">
                     <div class="ratio-label">USDT Ratio</div>
                     <div class="ratio-value" id="usdt-ratio-text">1 USDT ≈ 107.61 INR</div>
-                    <div class="ratio-sub">Bonus ratio: 2%</div>
+                    <div class="ratio-sub" id="topup-bonus-sub">Bonus ratio: 2%</div>
                 </div>
                 <div class="ratio-divider"></div>
                 <div class="ratio-right">
@@ -103,7 +104,7 @@
 
         <!-- Bottom Navigation Bar -->
         <nav class="bottom-navbar">
-            <a href="home.html" class="nav-item active">
+            <a href="home.html" class="nav-item active" id="nav-tab-home">
                 <div class="nav-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
@@ -138,7 +139,7 @@
             <a href="#" class="nav-item" id="nav-tab-me">
                 <div class="nav-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 13H8v-2h2v2zm4 0h-2v-2h2v2zm1-5c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm-6 0c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/>
+                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                     </svg>
                 </div>
                 <span>Me</span>
@@ -146,59 +147,62 @@
         </nav>
 
         <!-- ========================================== -->
-        <!-- SEQUENTIAL POPUP MODALS -->
+        <!-- SEQUENTIAL POPUP MODALS                    -->
         <!-- ========================================== -->
 
-        <!-- 1. MPIN Setup Popup Modal -->
+        <!-- 1. MPIN Setup Popup Modal (matches Photo 2) -->
         <div class="modal-overlay" id="mpin-modal">
-            <div class="modal-content mpin-card" style="padding: 24px 0 0 0;">
-                <h3 style="text-align: center; margin-bottom: 24px; font-size: 18px; font-weight: 700;">Enter your mpin</h3>
-                <form id="mpin-form" class="modal-form" style="display: flex; flex-direction: column; align-items: center;">
-                    <div class="mpin-inputs" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; padding: 0 16px;">
-                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
-                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
-                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
-                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
-                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
-                        <input type="tel" class="mpin-box" maxlength="1" pattern="\d" required>
+            <div class="modal-content mpin-card">
+                <h3 class="mpin-title">Enter your mpin</h3>
+                <form id="mpin-form" class="mpin-form">
+                    <div class="mpin-inputs" id="mpin-inputs-row">
+                        <input type="tel" class="mpin-box" maxlength="1" inputmode="numeric" pattern="\d" autocomplete="off">
+                        <input type="tel" class="mpin-box" maxlength="1" inputmode="numeric" pattern="\d" autocomplete="off">
+                        <input type="tel" class="mpin-box" maxlength="1" inputmode="numeric" pattern="\d" autocomplete="off">
+                        <input type="tel" class="mpin-box" maxlength="1" inputmode="numeric" pattern="\d" autocomplete="off">
+                        <input type="tel" class="mpin-box" maxlength="1" inputmode="numeric" pattern="\d" autocomplete="off">
+                        <input type="tel" class="mpin-box" maxlength="1" inputmode="numeric" pattern="\d" autocomplete="off">
                     </div>
-                    <div style="display: flex; width: 100%; border-top: 1px solid #f0f0f0;">
-                        <button type="button" id="btn-mpin-cancel" style="flex: 1; padding: 16px; background: none; border: none; font-size: 16px; font-weight: 600; color: #333; border-right: 1px solid #f0f0f0; cursor: pointer;">Cancel</button>
-                        <button type="submit" id="btn-mpin-confirm" style="flex: 1; padding: 16px; background: none; border: none; font-size: 16px; font-weight: 600; color: #0084ff; cursor: pointer;">Confirm</button>
+                    <div class="mpin-action-row">
+                        <button type="button" id="btn-mpin-cancel" class="mpin-btn-cancel">Cancel</button>
+                        <button type="submit" id="btn-mpin-confirm" class="mpin-btn-confirm">Confirm</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- 2. Success Popup Modal -->
+        <!-- 2. Success Message Popup -->
         <div class="modal-overlay" id="success-modal">
             <div class="modal-content success-card">
-                <div class="modal-icon-success">✓</div>
-                <h3>Verification Successful</h3>
-                <p>Your security MPIN has been saved successfully. Welcome to ShowPay 2.0!</p>
-                <button class="btn-modal-submit" id="btn-success-continue">Continue</button>
+                <div class="success-check-wrap">
+                    <div class="success-check">✓</div>
+                </div>
+                <h3 class="success-title">Account Updated!</h3>
+                <p class="success-msg">Your account successfully updated,<br>please wait some time</p>
             </div>
         </div>
 
         <!-- 3. Video Popup Modal -->
         <div class="modal-overlay" id="video-modal">
             <div class="modal-content video-card">
-                <button class="btn-modal-close" id="btn-close-video">✕</button>
-                <h3 id="video-modal-title">How to use ShowPay Fast</h3>
+                <div class="video-header">
+                    <span id="video-modal-title" class="video-title">ShowPay Tutorial</span>
+                    <button class="btn-video-close" id="btn-close-video">✕</button>
+                </div>
                 <div class="popup-video-container">
-                    <video id="popup-video-player" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" controls autoplay muted playsinline></video>
+                    <video id="popup-video-player" src="" controls playsinline></video>
                 </div>
             </div>
         </div>
 
         <!-- 4. Telegram Promo Popup Modal -->
         <div class="modal-overlay" id="telegram-modal">
-            <div class="modal-content telegram-card" style="padding: 24px 0 0 0; max-width: 340px;">
-                <h3 id="telegram-modal-title" style="text-align: center; margin-bottom: 12px; font-size: 18px; font-weight: 700;">Telegram</h3>
-                <p id="telegram-modal-desc" style="text-align: center; color: #666; font-size: 15px; margin-bottom: 24px; padding: 0 24px; line-height: 1.4;">Join our Telegram channel to get the latest updates.</p>
-                <div style="display: flex; width: 100%; border-top: 1px solid #f0f0f0;">
-                    <button type="button" id="btn-close-telegram" style="flex: 1; padding: 16px; background: none; border: none; font-size: 16px; font-weight: 600; color: #333; border-right: 1px solid #f0f0f0; cursor: pointer;">Cancel</button>
-                    <a href="https://t.me/showpay_official" target="_blank" id="telegram-modal-link" style="flex: 1; padding: 16px; background: none; border: none; font-size: 16px; font-weight: 600; color: #0084ff; text-align: center; text-decoration: none;">Join</a>
+            <div class="modal-content telegram-card">
+                <h3 id="telegram-modal-title" class="telegram-title">Telegram</h3>
+                <p id="telegram-modal-desc" class="telegram-desc">Join our official Telegram channel for latest updates and rewards.</p>
+                <div class="telegram-action-row">
+                    <button type="button" id="btn-close-telegram" class="telegram-btn-cancel">Cancel</button>
+                    <a href="https://t.me/showpay_official" target="_blank" id="telegram-modal-link" class="telegram-btn-join">Join</a>
                 </div>
             </div>
         </div>

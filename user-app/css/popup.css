@@ -1,18 +1,24 @@
+/* ============================================
+   POPUP / MODAL CSS — ShowPay 2.0
+   Matches all popup screenshots exactly
+   ============================================ */
+
+/* ---- Overlay ---- */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .modal-overlay.active {
@@ -21,81 +27,301 @@
 }
 
 .modal-content {
-    background: var(--bg-main);
+    background: #ffffff;
     width: 90%;
-    max-width: 420px;
-    border-radius: 24px;
-    padding: 32px 24px;
-    box-shadow: var(--modal-shadow);
-    transform: translateY(20px);
+    max-width: 360px;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    transform: translateY(24px) scale(0.97);
     transition: transform 0.3s ease;
+    overflow: hidden;
 }
 
 .modal-overlay.active .modal-content {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
-.popup-title {
-    font-size: 20px;
+/* ============================================
+   MPIN POPUP (matches Photo 2 exactly)
+   ============================================ */
+.mpin-card {
+    padding: 28px 0 0 0;
+}
+
+.mpin-title {
+    text-align: center;
+    font-size: 18px;
     font-weight: 700;
-    text-align: center;
-    margin-bottom: 12px;
+    color: #1a1a1a;
+    margin: 0 0 28px 0;
+    padding: 0 20px;
 }
 
-.popup-desc {
-    color: var(--text-muted);
-    font-size: 15px;
-    text-align: center;
-    margin-bottom: 24px;
-    line-height: 1.5;
+.mpin-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .mpin-inputs {
     display: flex;
+    gap: 10px;
     justify-content: center;
-    gap: 16px;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
+    padding: 0 16px;
 }
 
 .mpin-box {
-    width: 45px;
-    height: 45px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 24px;
+    width: 42px;
+    height: 48px;
+    border: 1.5px solid #dde1e7;
+    border-radius: 10px;
+    font-size: 22px;
     font-weight: 700;
     text-align: center;
-    background: transparent;
+    background: #ffffff;
+    color: #1a1a1a;
     outline: none;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+    -webkit-appearance: none;
+    caret-color: #0084ff;
 }
 
 .mpin-box:focus {
     border-color: #0084ff;
-    box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 132, 255, 0.12);
+    background: #f8fbff;
+}
+
+.mpin-box.filled {
+    border-color: #0084ff;
+    background: #f0f7ff;
+}
+
+.mpin-action-row {
+    display: flex;
+    width: 100%;
+    border-top: 1px solid #f0f0f0;
+}
+
+.mpin-btn-cancel {
+    flex: 1;
+    padding: 18px 0;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    border-right: 1px solid #f0f0f0;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+}
+
+.mpin-btn-cancel:hover {
+    background: #f8f8f8;
+}
+
+.mpin-btn-confirm {
+    flex: 1;
+    padding: 18px 0;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0084ff;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+}
+
+.mpin-btn-confirm:hover {
+    background: #f0f7ff;
+}
+
+.mpin-btn-confirm:disabled {
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   SUCCESS POPUP
+   ============================================ */
+.success-card {
+    padding: 40px 28px 36px;
+    text-align: center;
+}
+
+.success-check-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.success-check {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+    animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    80% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.success-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
+}
+
+.success-msg {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ============================================
+   VIDEO POPUP
+   ============================================ */
+.video-card {
+    padding: 0;
+    max-width: 400px;
+}
+
+.video-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.video-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-video-close {
+    width: 30px;
+    height: 30px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    font-size: 13px;
+    cursor: pointer;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 12px;
+    transition: background 0.2s;
+}
+
+.btn-video-close:hover {
+    background: #e0e0e0;
 }
 
 .popup-video-container {
     width: 100%;
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 20px;
     background: #000;
+    border-radius: 0 0 22px 22px;
+    overflow: hidden;
 }
 
 .popup-video-container video {
     width: 100%;
     display: block;
-}
-
-.telegram-logo-container {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px auto;
-}
-
-.telegram-logo-container img {
-    width: 100%;
-    height: 100%;
+    max-height: 280px;
     object-fit: contain;
+}
+
+/* ============================================
+   TELEGRAM POPUP
+   ============================================ */
+.telegram-card {
+    padding: 32px 0 0 0;
+}
+
+.telegram-title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
+    padding: 0 24px;
+}
+
+.telegram-desc {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 28px 0;
+    padding: 0 24px;
+}
+
+.telegram-action-row {
+    display: flex;
+    width: 100%;
+    border-top: 1px solid #f0f0f0;
+}
+
+.telegram-btn-cancel {
+    flex: 1;
+    padding: 18px 0;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    border-right: 1px solid #f0f0f0;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+}
+
+.telegram-btn-cancel:hover {
+    background: #f8f8f8;
+}
+
+.telegram-btn-join {
+    flex: 1;
+    padding: 18px 0;
+    background: none;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0084ff;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    border-radius: 0 0 22px 0;
+}
+
+.telegram-btn-join:hover {
+    background: #f0f7ff;
 }
