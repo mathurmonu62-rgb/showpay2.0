@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShowPay Admin — Slider</title>
+  <link rel="stylesheet" href="../css/admin.css"/>
+</head>
+<body>
+<div id="toast-container"></div>
+<div id="global-loader"><div class="spinner"></div></div>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="sidebar-logo-text">ShowPay</div><div class="sidebar-logo-sub">Admin Panel</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+      <a href="users.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users</a>
+      <div class="nav-section-label">Content</div>
+      <a href="slider.html" class="sidebar-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/></svg>Slider Images</a>
+      <a href="video-popup.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Video Popup</a>
+      <a href="telegram-popup.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Telegram Popup</a>
+      <div class="nav-section-label">System</div>
+      <a href="settings.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+      <a href="notifications.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>Notifications</a>
+      <a href="activity-logs.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Activity Logs</a>
+      <a href="trash.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/></svg>Trash</a>
+      <div class="nav-section-label">Account</div>
+      <a href="profile.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+    </nav>
+    <div class="sidebar-bottom"><a href="#" class="sidebar-link" id="logout-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a></div>
+  </aside>
+  <div class="main-area">
+    <header class="admin-header">
+      <div class="header-title">Slider Images</div>
+      <div class="header-right"><div class="admin-name" id="admin-name">Admin</div><div class="admin-avatar">A</div></div>
+    </header>
+    <main class="content">
+      <div class="page-header">
+        <div><div class="page-title">Slider Manager</div><div class="page-subtitle">Manage images shown in the home page slider</div></div>
+        <button class="btn btn-primary" id="add-slide-btn">+ Add Slide</button>
+      </div>
+
+      <!-- Add slide form -->
+      <div class="card" id="add-form" style="display:none;margin-bottom:20px;max-width:560px;">
+        <div class="card-title">Add New Slide</div>
+        <div class="form-group"><label class="form-label">Title</label><input class="form-input" type="text" id="slide-title" placeholder="Slide title"/></div>
+        <div class="form-group"><label class="form-label">Image URL</label><input class="form-input" type="url" id="slide-image-url" placeholder="https://...image.jpg"/></div>
+        <div class="form-group"><label class="form-label">Link URL (optional)</label><input class="form-input" type="url" id="slide-link-url" placeholder="https://..."/></div>
+        <div class="form-group"><label class="form-label">Display Order</label><input class="form-input" type="number" id="slide-order" value="1" min="1"/></div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-primary" id="save-slide-btn">Save Slide</button>
+          <button class="btn btn-ghost" id="cancel-slide-btn">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Slides list -->
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Order</th><th>Preview</th><th>Title</th><th>Enabled</th><th>Actions</th></tr></thead>
+            <tbody id="slider-tbody"><tr><td colspan="5" style="text-align:center;padding:40px;color:#94a3b8;">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script type="module" src="../js/slider.js"></script>
+</body>
+</html>

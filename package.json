@@ -1,0 +1,15 @@
+{
+  "name": "showpay",
+  "version": "2.0.0",
+  "description": "ShowPay - Login to MPIN to Video to Telegram flow app",
+  "scripts": {
+    "dev": "npx serve . -p 3000",
+    "start": "npx serve ."
+  },
+  "keywords": ["showpay", "fintech"],
+  "author": "ShowPay Team",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "serve": "^14.0.0"
+  }
+}

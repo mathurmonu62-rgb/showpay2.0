@@ -1,0 +1,16 @@
+{
+  "name": "ShowPay",
+  "short_name": "ShowPay",
+  "description": "ShowPay - Fintech Web App",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B8BF5",
+  "icons": [
+    {
+      "src": "/public/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

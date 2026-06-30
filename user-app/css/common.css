@@ -1,0 +1,102 @@
+/* ============================================================
+   SHOWPAY 2.0 — COMMON CSS
+   Base resets, typography, variables
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #3B8BF5;
+  --primary-dark: #2b7ae0;
+  --primary-light: #e8f1fe;
+  --white: #ffffff;
+  --bg: #f5f7fa;
+  --text-dark: #1a1a2e;
+  --text-gray: #888;
+  --text-muted: #aaa;
+  --border: #e8e8e8;
+  --card-bg: #ffffff;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --navbar-h: 64px;
+  --font: 'Inter', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; outline: none; font-family: var(--font); }
+input { outline: none; font-family: var(--font); }
+img { max-width: 100%; display: block; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+/* Toast */
+#toast-container {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { background: #e53935; }
+.toast.success { background: #2e7d32; }
+
+/* Loader overlay */
+#global-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#global-loader.active { opacity: 1; pointer-events: all; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--primary-light);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

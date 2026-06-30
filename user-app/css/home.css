@@ -1,0 +1,253 @@
+/* ============================================================
+   SHOWPAY 2.0 — HOME PAGE CSS
+   ============================================================ */
+
+.home-page {
+  background: #f5f7fa;
+  min-height: 100vh;
+  padding-bottom: calc(var(--navbar-h) + 16px);
+}
+
+/* ── TOP HEADER ── */
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header-logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+}
+
+.header-logo span { color: var(--primary); }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary);
+  position: relative;
+}
+
+.header-icon-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.notif-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background: #e53935;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+}
+
+/* ── RATIO CARDS ── */
+.ratio-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+}
+
+.ratio-card {
+  padding: 14px 16px;
+  border-right: 1px solid #f0f0f0;
+}
+
+.ratio-card:last-child { border-right: none; }
+
+.ratio-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+}
+
+.ratio-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.ratio-sub {
+  font-size: 11px;
+  color: var(--primary);
+  margin-top: 3px;
+  opacity: 0.8;
+}
+
+.ratio-big {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* ── TOP UP BUTTON ── */
+.topup-section {
+  padding: 10px 12px;
+  background: #fff;
+  border-top: 6px solid #f5f7fa;
+}
+
+.topup-btn {
+  width: 100%;
+  padding: 17px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+  letter-spacing: 1px;
+}
+
+.topup-btn:active { background: var(--primary-dark); }
+
+.topup-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 0 10px 0 10px;
+  letter-spacing: 0.5px;
+}
+
+/* ── BALANCE GRID ── */
+.balance-section {
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.balance-item {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f7fa;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+
+.balance-item:hover { background: #f9f9fb; }
+
+.balance-item:nth-child(odd) {
+  border-right: 1px solid #f0f0f0;
+}
+
+.balance-info {}
+
+.balance-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 3px;
+}
+
+.balance-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.balance-arrow {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+/* ── TUTORIAL SECTION ── */
+.tutorial-section {
+  background: #fff;
+  margin-top: 8px;
+  padding: 16px 16px 4px;
+}
+
+.tutorial-heading {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.tutorial-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-top: 1px solid #f5f7fa;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.tutorial-item:hover .tutorial-link-text { opacity: 0.75; }
+
+.tutorial-link-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.tutorial-arrow {
+  color: var(--primary);
+  font-size: 16px;
+}
+
+/* ── CHAT BUBBLE ── */
+.chat-bubble {
+  position: fixed;
+  bottom: calc(var(--navbar-h) + 16px);
+  right: 16px;
+  width: 52px;
+  height: 52px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(59,139,245,0.4);
+  cursor: pointer;
+  z-index: 50;
+  transition: transform 0.2s;
+}
+
+.chat-bubble:hover { transform: scale(1.08); }
+.chat-bubble svg { width: 24px; height: 24px; color: #fff; }

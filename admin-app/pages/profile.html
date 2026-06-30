@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShowPay Admin — Profile</title>
+  <link rel="stylesheet" href="../css/admin.css"/>
+</head>
+<body>
+<div id="toast-container"></div><div id="global-loader"><div class="spinner"></div></div>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="sidebar-logo-text">ShowPay</div><div class="sidebar-logo-sub">Admin Panel</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+      <a href="users.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users</a>
+      <div class="nav-section-label">Content</div>
+      <a href="slider.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/></svg>Slider Images</a>
+      <a href="video-popup.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Video Popup</a>
+      <a href="telegram-popup.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Telegram Popup</a>
+      <div class="nav-section-label">System</div>
+      <a href="settings.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+      <a href="notifications.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>Notifications</a>
+      <a href="activity-logs.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Activity Logs</a>
+      <a href="trash.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/></svg>Trash</a>
+      <div class="nav-section-label">Account</div>
+      <a href="profile.html" class="sidebar-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+    </nav>
+    <div class="sidebar-bottom"><a href="#" class="sidebar-link" id="logout-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a></div>
+  </aside>
+  <div class="main-area">
+    <header class="admin-header"><div class="header-title">Admin Profile</div><div class="header-right"><div class="admin-name" id="admin-name">Admin</div><div class="admin-avatar">A</div></div></header>
+    <main class="content">
+      <div class="card" style="max-width:480px;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <div style="width:72px;height:72px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:800;margin:0 auto 12px;" id="profile-avatar">A</div>
+          <div style="font-size:17px;font-weight:700;" id="profile-email">—</div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:4px;">Administrator</div>
+        </div>
+        <div style="border-top:1px solid #f1f5f9;padding-top:20px;">
+          <div style="font-size:13px;color:#64748b;margin-bottom:8px;">Admin ID</div>
+          <div style="font-family:monospace;font-size:13px;color:#0f172a;" id="profile-id">—</div>
+          <div style="font-size:13px;color:#64748b;margin-top:16px;margin-bottom:8px;">Joined</div>
+          <div style="font-size:13px;color:#0f172a;" id="profile-created">—</div>
+        </div>
+        <button class="btn btn-danger" style="width:100%;margin-top:24px;" id="profile-logout">Logout</button>
+      </div>
+    </main>
+  </div>
+</div>
+<script type="module">
+  import { requireAdminAuth, getAdminSession, clearAdminSession } from '../js/auth.js';
+  requireAdminAuth();
+  const admin = getAdminSession();
+  if (admin) {
+    document.getElementById('admin-name').textContent = admin.email?.split('@')[0];
+    document.getElementById('profile-email').textContent = admin.email;
+    document.getElementById('profile-avatar').textContent = (admin.email?.[0] || 'A').toUpperCase();
+    document.getElementById('profile-id').textContent = admin.id;
+    document.getElementById('profile-created').textContent = new Date(admin.created_at).toLocaleString('en-IN');
+  }
+  document.getElementById('logout-link')?.addEventListener('click', (e) => { e.preventDefault(); clearAdminSession(); window.location.href = '/admin-app/pages/login.html'; });
+  document.getElementById('profile-logout')?.addEventListener('click', () => { clearAdminSession(); window.location.href = '/admin-app/pages/login.html'; });
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/", "dest": "/user-app/pages/login.html" },
+    { "src": "/login", "dest": "/user-app/pages/login.html" },
+    { "src": "/home", "dest": "/user-app/pages/home.html" },
+    { "src": "/admin", "dest": "/admin-app/pages/login.html" },
+    { "src": "/admin/login", "dest": "/admin-app/pages/login.html" },
+    { "src": "/admin/dashboard", "dest": "/admin-app/pages/dashboard.html" },
+    { "src": "/admin/users", "dest": "/admin-app/pages/users.html" },
+    { "src": "/admin/slider", "dest": "/admin-app/pages/slider.html" },
+    { "src": "/admin/video", "dest": "/admin-app/pages/video-popup.html" },
+    { "src": "/admin/telegram", "dest": "/admin-app/pages/telegram-popup.html" },
+    { "src": "/admin/settings", "dest": "/admin-app/pages/settings.html" },
+    { "src": "/admin/notifications", "dest": "/admin-app/pages/notifications.html" },
+    { "src": "/admin/activity", "dest": "/admin-app/pages/activity-logs.html" },
+    { "src": "/admin/trash", "dest": "/admin-app/pages/trash.html" },
+    { "src": "/admin/profile", "dest": "/admin-app/pages/profile.html" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/user-app/pages/404.html" }
+  ]
+}

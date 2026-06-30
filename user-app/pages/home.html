@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ShowPay — Home</title>
+  <meta name="description" content="ShowPay Home — Your earnings dashboard." />
+  <link rel="stylesheet" href="../css/common.css" />
+  <link rel="stylesheet" href="../css/home.css" />
+  <link rel="stylesheet" href="../css/slider.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/popup.css" />
+</head>
+<body class="home-page">
+
+  <!-- Global Loader -->
+  <div id="global-loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  TOP HEADER                               -->
+  <!-- ══════════════════════════════════════════ -->
+  <header class="home-header">
+    <div class="header-logo">ShowPay</div>
+    <div class="header-right">
+      <button class="header-icon-btn" id="notif-btn" aria-label="Notifications">
+        <!-- Circle-exclamation icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span class="notif-badge" id="notif-badge" style="display:none;"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  SLIDER                                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="slider-section" id="slider-section">
+    <div class="slider-wrapper" id="slider-wrapper">
+      <!-- Slides injected by slider.js -->
+      <div class="slide slide-placeholder">
+        <div style="height:190px;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;">
+          <div style="text-align:center;color:#fff;">
+            <div style="font-size:28px;margin-bottom:8px;">📊</div>
+            <div style="font-size:14px;opacity:0.7;">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-dots" id="slider-dots"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  RATIO CARDS                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="ratio-section">
+    <div class="ratio-card">
+      <div class="ratio-label">USDT Ratio</div>
+      <div class="ratio-value" id="usdt-ratio">1 USDT ≈ 107.61 INR</div>
+      <div class="ratio-sub" id="topup-bonus-ratio">Bonus ratio: 2%</div>
+    </div>
+    <div class="ratio-card">
+      <div class="ratio-label">INR Bonus Ratio</div>
+      <div class="ratio-big" id="bonus-ratio">4%</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  TOP UP BUTTON                            -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="topup-section">
+    <button class="topup-btn" id="topup-btn" type="button">
+      Top up
+      <span class="topup-badge">⭐ First</span>
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  BALANCE GRID                             -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="balance-section">
+    <a href="#" class="balance-item" id="balance-btn">
+      <div class="balance-info">
+        <div class="balance-label">Balance</div>
+        <div class="balance-value">0.00</div>
+      </div>
+      <span class="balance-arrow">›</span>
+    </a>
+    <a href="#" class="balance-item" id="received-btn">
+      <div class="balance-info">
+        <div class="balance-label">Today Received</div>
+        <div class="balance-value">0.00</div>
+      </div>
+      <span class="balance-arrow">›</span>
+    </a>
+    <a href="#" class="balance-item" id="topup-bonus-btn">
+      <div class="balance-info">
+        <div class="balance-label">Top up Bonus</div>
+        <div class="balance-value">0.00</div>
+      </div>
+      <span class="balance-arrow">›</span>
+    </a>
+    <a href="#" class="balance-item" id="team-commission-btn">
+      <div class="balance-info">
+        <div class="balance-label">Team Commission</div>
+        <div class="balance-value">0.00</div>
+      </div>
+      <span class="balance-arrow">›</span>
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  TUTORIAL SECTION                         -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tutorial-section">
+    <div class="tutorial-heading">Tutorial</div>
+    <a href="#" class="tutorial-item" target="_blank" rel="noopener">
+      <span class="tutorial-link-text">ShowPay Official Website</span>
+      <span class="tutorial-arrow">›</span>
+    </a>
+    <a href="#" class="tutorial-item" target="_blank" rel="noopener">
+      <span class="tutorial-link-text">How to Top Up</span>
+      <span class="tutorial-arrow">›</span>
+    </a>
+    <a href="#" class="tutorial-item" target="_blank" rel="noopener">
+      <span class="tutorial-link-text">How to Withdraw</span>
+      <span class="tutorial-arrow">›</span>
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  CHAT BUBBLE                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <button class="chat-bubble" id="chat-bubble" aria-label="Support">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+    </svg>
+  </button>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  BOTTOM NAVBAR                            -->
+  <!-- ══════════════════════════════════════════ -->
+  <nav class="bottom-navbar">
+    <a href="#" class="nav-item active" id="nav-home">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </div>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="#" class="nav-item" id="nav-deposit">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      </div>
+      <span class="nav-label">Deposit</span>
+    </a>
+    <a href="#" class="nav-item" id="nav-upi">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+          <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
+        </svg>
+      </div>
+      <span class="nav-label">UPI</span>
+    </a>
+    <a href="#" class="nav-item" id="nav-team">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+          <path d="M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+      </div>
+      <span class="nav-label">Team</span>
+    </a>
+    <a href="#" class="nav-item" id="nav-me">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Me</span>
+    </a>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  MPIN POPUP                               -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="mpin-overlay" id="mpin-overlay" role="dialog" aria-modal="true" aria-label="Enter MPIN">
+    <div class="mpin-card" id="mpin-card">
+      <h2 class="mpin-title">Enter your mpin</h2>
+      <div class="mpin-inputs" id="mpin-inputs">
+        <input class="mpin-box" id="mpin-0" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" />
+        <input class="mpin-box" id="mpin-1" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" />
+        <input class="mpin-box" id="mpin-2" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" />
+        <input class="mpin-box" id="mpin-3" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" />
+        <input class="mpin-box" id="mpin-4" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" />
+        <input class="mpin-box" id="mpin-5" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" />
+      </div>
+      <div class="mpin-divider"></div>
+      <div class="mpin-actions">
+        <button class="mpin-btn cancel" id="mpin-cancel">Cancel</button>
+        <button class="mpin-btn confirm" id="mpin-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  SUCCESS POPUP                            -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="success-overlay" id="success-overlay" role="dialog" aria-modal="true">
+    <div class="success-card" id="success-card">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Account Updated!</div>
+      <div class="success-msg">Your account updated successfully.<br/>Please wait some time.</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  VIDEO POPUP                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="video-popup-overlay" id="video-popup-overlay" role="dialog" aria-modal="true">
+    <div class="video-popup-card" id="video-popup-card">
+      <button class="video-popup-close" id="video-close-btn" aria-label="Close video">✕</button>
+      <video id="main-video" playsinline muted autoplay>
+        <source id="video-source" src="" type="video/mp4" />
+        Your browser does not support video.
+      </video>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  TELEGRAM POPUP                           -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tg-popup-overlay" id="tg-popup-overlay" role="dialog" aria-modal="true">
+    <div class="tg-popup-card" id="tg-popup-card">
+      <img id="tg-img" class="tg-popup-img" src="" alt="Telegram" />
+      <div class="tg-popup-title" id="tg-title">Join Official Telegram</div>
+      <div class="tg-popup-desc" id="tg-desc">Stay updated with daily tips and instant rewards!</div>
+      <a id="tg-join-btn" class="tg-popup-btn" href="#" target="_blank" rel="noopener">Join Telegram</a>
+      <span class="tg-popup-skip" id="tg-close-btn">Close</span>
+    </div>
+  </div>
+
+
+  <script type="module" src="../js/home.js"></script>
+</body>
+</html>
