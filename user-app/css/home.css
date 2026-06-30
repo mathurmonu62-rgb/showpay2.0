@@ -98,8 +98,8 @@ body {
 .slider-track-outer {
     position: relative;
     width: 100%;
-    aspect-ratio: 2.1 / 1;
-    border-radius: 14px;
+    aspect-ratio: 2.18 / 1;
+    border-radius: 18px;
     overflow: hidden;
     background: #1a1a2e;
 }
